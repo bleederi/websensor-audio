@@ -53,7 +53,45 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 		<div id="container"></div>
 
 		<script>
-
+                        function toEulerianAngle(quat, out)
+                        {
+                                const ysqr = quat[1] ** 2;
+               
+                                // Roll (x-axis rotation).
+                                const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
+                                const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
+                                out[0] = Math.atan2(t0, t1);
+                                // Pitch (y-axis rotation).
+                                let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
+                                t2 = t2 > 1 ? 1 : t2;
+                                t2 = t2 < -1 ? -1 : t2;
+                                out[1] = Math.asin(t2);
+                                // Yaw (z-axis rotation).
+                                const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
+                                const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
+                                out[2] = Math.atan2(t3, t4);
+                                return out;
+                        }
+                        class InclinationSensor {
+                                constructor() {
+                                const sensor = new AbsoluteOrientationSensor({ frequency: 60 });
+                                const mat4 = new Float32Array(16);
+                                const euler = new Float32Array(3);
+                                sensor.onreading = () => {
+                                        sensor.populateMatrix(mat4);
+                                        let angles = toEulerianAngle(sensor.quaternion, euler);
+                                        this.roll = euler[0];
+                                        this.pitch = euler[1];
+                                        this.yaw = euler[2];
+                                        if (this.onreading) this.onreading();
+                                };
+                                sensor.onactivate = () => {
+                                        if (this.onactivate) this.onactivate();
+                                }
+                                const start = () => sensor.start();
+                                Object.assign(this, { start });
+                                }
+                        }
 			var container;
 			var camera, controls, scene, renderer;
 			var light, pointLight;
@@ -131,16 +169,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				var mesh2 = new THREE.Mesh( sphere2, material2 );
 				mesh2.position.set( 250, 30, 0 );
 				scene.add( mesh2 );
-/*
-				var sound2 = new THREE.PositionalAudio( listener );
-				audioLoader.load( 'sounds/376737_Skullbeatz___Bad_Cat_Maste.ogg', function( buffer ) {
-					sound2.setBuffer( buffer );
-					sound2.setRefDistance( 20 );
-					sound2.play();
-				});
-				mesh2.add( sound2 );
-*/
-				//
 
 
 				var mesh3 = new THREE.Mesh( sphere2, material3 );
@@ -174,6 +202,16 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 				container.innerHTML = "";
 				container.appendChild( renderer.domElement );
+
+                        const sensor = new InclinationSensor();
+                        sensor.onreading = () => {
+                        this.roll = sensor.roll;
+                        this.pitch = sensor.pitch;
+                        this.yaw = sensor.yaw;
+                        }
+                        sensor.onactivate = () => this.render();
+                        sensor.start();
+                        }
 
 			}
 
