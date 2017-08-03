@@ -99,7 +99,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				scene.add( mesh1 );
 
 				var sound1 = new THREE.PositionalAudio( listener );
-				audioLoader.load( 'sounds/358232_j_s_song.ogg', function( buffer ) {
+				audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
 					sound1.setBuffer( buffer );
 					sound1.setRefDistance( 20 );
 					sound1.play();
@@ -111,7 +111,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				var mesh2 = new THREE.Mesh( sphere, material2 );
 				mesh2.position.set( 250, 30, 0 );
 				scene.add( mesh2 );
-
+/*
 				var sound2 = new THREE.PositionalAudio( listener );
 				audioLoader.load( 'sounds/376737_Skullbeatz___Bad_Cat_Maste.ogg', function( buffer ) {
 					sound2.setBuffer( buffer );
@@ -119,7 +119,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 					sound2.play();
 				});
 				mesh2.add( sound2 );
-
+*/
 				//
 
 
@@ -140,11 +140,11 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				// analysers
 
 				analyser1 = new THREE.AudioAnalyser( sound1, 32 );
-				analyser2 = new THREE.AudioAnalyser( sound2, 32 );
+				//analyser2 = new THREE.AudioAnalyser( sound2, 32 );
 				analyser3 = new THREE.AudioAnalyser( sound3, 32 );
 
 				// global ambient audio
-
+/*
 				var sound4 = new THREE.Audio( listener );
 				audioLoader.load( 'sounds/Project_Utopia.ogg', function( buffer ) {
 					sound4.setBuffer( buffer );
@@ -152,7 +152,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 					sound4.setVolume(0.5);
 					sound4.play();
 				});
-
+*/
 				// ground
 
 				var helper = new THREE.GridHelper( 1000, 10, 0x444444, 0x444444 );
@@ -195,7 +195,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				var delta = clock.getDelta();
 
 				material1.emissive.b = analyser1.getAverageFrequency() / 256;
-				material2.emissive.b = analyser2.getAverageFrequency() / 256;
+				//material2.emissive.b = analyser2.getAverageFrequency() / 256;
 				material3.emissive.b = analyser3.getAverageFrequency() / 256;
 
 				renderer.render( scene, camera );
