@@ -1,5 +1,8 @@
 <!--
-Copyright 2017 Jesse Nieminen
+Websensor audio project
+https://github.com/jessenie-intel/websensor-video
+
+Copyright (c) 2017 Jesse Nieminen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -154,6 +157,88 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                         }
                         });
 			
+/*
+* Audio code below
+* http://webaudioapi.com/samples/spatialized/ used as base
+*/
+
+function SpatializedSample(el) {
+  var sample = this;
+  this.isPlaying = false;
+  this.size = {width: 400, height: 300};
+
+  // Load the sample to pan around.
+  loadSounds(this, {
+    buffer: 'sounds/baby-music-box_daniel-simion.wav'   //Credit to Daniel Simion, http://soundbible.com/2196-Baby-Music-Box.html
+  });
+
+  // Create a new canvas element.
+  var canvas = document.createElement('canvas');
+  canvas.setAttribute('width', this.size.width);
+  canvas.setAttribute('height', this.size.height);
+  el.appendChild(canvas);
+
+  // Create a new Area.
+  field = new Field(canvas);
+  field.registerPointChanged(function() {
+    sample.changePosition.apply(sample, arguments);
+  });
+  field.registerAngleChanged(function() {
+    sample.changeAngle.apply(sample, arguments);
+  });
+}
+
+SpatializedSample.prototype.play = function() {
+  // Hook up the audio graph for this sample.
+  var source = context.createBufferSource();
+  source.buffer = this.buffer;
+  source.loop = true;
+  var panner = context.createPanner();
+  panner.coneOuterGain = 0.1;
+  panner.coneOuterAngle = 180;
+  panner.coneInnerAngle = 0;
+  // Set the panner node to be at the origin looking in the +x
+  // direction.
+  panner.connect(context.destination);
+  source.connect(panner);
+  source.start(0);
+  // Position the listener at the origin.
+  context.listener.setPosition(0, 0, 0);
+  foo = panner;
+
+  // Expose parts of the audio graph to other functions.
+  this.source = source;
+  this.panner = panner;
+  this.isPlaying = true;
+}
+
+SpatializedSample.prototype.stop = function() {
+  this.source.stop(0);
+  this.isPlaying = false;
+}
+
+SpatializedSample.prototype.changePosition = function(position) {
+  // Position coordinates are in normalized canvas coordinates
+  // with -0.5 < x, y < 0.5
+  if (position) {
+    if (!this.isPlaying) {
+      this.play();
+    }
+    var mul = 2;
+    var x = position.x / this.size.width;
+    var y = -position.y / this.size.height;
+    this.panner.setPosition(x * mul, y * mul, -0.5);
+  } else {
+    this.stop();
+  }
+};
+
+SpatializedSample.prototype.changeAngle = function(angle) {
+  console.log(angle);
+  // Compute the vector for this angle.
+  if (this.panner) {
+    this.panner.setOrientation(Math.cos(angle), -Math.sin(angle), 1);
+  }
 		</script>
                 <sphere-view></sphere-view>
 	</body>
