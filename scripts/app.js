@@ -63,7 +63,7 @@ var pitch = 0;
 var yaw = 0;
 var latitude=0;
 var longitude=0;
-const container = document.querySelector('#app-view');
+const container;
 var camera, controls, scene, renderer;
 var light, pointLight;
 
@@ -96,7 +96,7 @@ init();
 render();
 
 function init() {
-
+container = document.querySelector('#app-view')
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
