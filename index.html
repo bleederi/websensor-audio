@@ -48,8 +48,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                 </style>
         </template>
 	<body>
-
-                <sphere-view></sphere-view>
 		<script>
                         
 
@@ -132,6 +130,52 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 			this.scene.add(sphereMesh);
 
+                        /*
+                        *       Audio code below
+                        */
+/*//Create an AudioListener and add it to the camera
+var listener = new THREE.AudioListener();
+this.camera.add( listener );
+
+//Create the PositionalAudio object (passing in the listener)
+var sound = new THREE.PositionalAudio( listener );
+
+//Load a sound and set it as the PositionalAudio object's buffer
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
+	sound1.setBuffer( buffer );
+	sound1.setRefDistance( 20 );
+	sound1.play();
+});
+
+//Create an object for the sound to play from
+var sphere = new THREE.SphereGeometry( 20, 32, 16 );
+var material = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
+var mesh = new THREE.Mesh( sphere, material );
+scene.add( mesh );
+
+//Finally add the sound to the mesh
+mesh.add( sound );
+*/
+
+				var audioLoader = new THREE.AudioLoader();
+
+				var mesh1 = new THREE.Mesh( sphere, material1 );
+				mesh1.position.set( -250, 30, 0 );
+				this.scene.add( mesh1 );
+
+				var sound1 = new THREE.PositionalAudio( listener );
+				audioLoader.load( 'baby-music-box_daniel-simion.wav', function( buffer ) {
+					sound1.setBuffer( buffer );
+					sound1.setRefDistance( 20 );
+					sound1.play();
+				});
+				mesh1.add( sound1 );
+
+
+                        /*
+                        *       Sensor initialization below
+                        */
                         const sensor = new InclinationSensor();
                         sensor.onreading = () => {
                         this.roll = sensor.roll;
@@ -159,93 +203,9 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                                 requestAnimationFrame(() => this.render());
                         }
                         });
-			
-/*
-* Audio code below
-* http://webaudioapi.com/samples/spatialized/ used as base
-*/
-
-function SpatializedSample(el) {
-  var sample = this;
-  this.isPlaying = false;
-  this.size = {width: 400, height: 300};
-
-  // Load the sample to pan around.
-  loadSounds(this, {
-    buffer: 'sounds/baby-music-box_daniel-simion.wav'   //Credit to Daniel Simion, http://soundbible.com/2196-Baby-Music-Box.html
-  });
-
-  // Create a new canvas element.
-  var canvas = document.createElement('canvas');
-  canvas.setAttribute('width', this.size.width);
-  canvas.setAttribute('height', this.size.height);
-  el.appendChild(canvas);
-
-  // Create a new Area.
-  field = new Field(canvas);
-  field.registerPointChanged(function() {
-    sample.changePosition.apply(sample, arguments);
-  });
-  field.registerAngleChanged(function() {
-    sample.changeAngle.apply(sample, arguments);
-  });
-}
-
-SpatializedSample.prototype.play = function() {
-  // Hook up the audio graph for this sample.
-  var source = context.createBufferSource();
-  source.buffer = this.buffer;
-  source.loop = true;
-  var panner = context.createPanner();
-  panner.coneOuterGain = 0.1;
-  panner.coneOuterAngle = 180;
-  panner.coneInnerAngle = 0;
-  // Set the panner node to be at the origin looking in the +x
-  // direction.
-  panner.connect(context.destination);
-  source.connect(panner);
-  source.start(0);
-  // Position the listener at the origin.
-  context.listener.setPosition(0, 0, 0);
-  foo = panner;
-
-  // Expose parts of the audio graph to other functions.
-  this.source = source;
-  this.panner = panner;
-  this.isPlaying = true;
-}
-
-SpatializedSample.prototype.stop = function() {
-  this.source.stop(0);
-  this.isPlaying = false;
-}
-
-SpatializedSample.prototype.changePosition = function(position) {
-  // Position coordinates are in normalized canvas coordinates
-  // with -0.5 < x, y < 0.5
-  if (position) {
-    if (!this.isPlaying) {
-      this.play();
-    }
-    var mul = 2;
-    var x = position.x / this.size.width;
-    var y = -position.y / this.size.height;
-    this.panner.setPosition(x * mul, y * mul, -0.5);
-  } else {
-    this.stop();
-  }
-};
-
-SpatializedSample.prototype.changeAngle = function(angle) {
-  console.log(angle);
-  // Compute the vector for this angle.
-  if (this.panner) {
-    this.panner.setOrientation(Math.cos(angle), -Math.sin(angle), 1);
-  }
-};
-
-sample = new SpatializedSample(document.querySelector('#sphere-view'));
 		</script>
+
+                <sphere-view></sphere-view>
 	</body>
 </html>
 
