@@ -107,6 +107,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                         this.latitude;
                         this.longitude;
 
+}
                 init() {
                         //ThreeJS scene setup below
 			// panoramas background
@@ -190,7 +191,6 @@ mesh.add( sound );
                         sensor.onactivate = () => {};
                         sensor.start();
                         }
-}
 
                         render() {
                                 this.longitude = -this.yaw * 180 / Math.PI;
