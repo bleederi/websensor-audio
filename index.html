@@ -156,14 +156,14 @@ limitations under the License.
 				var audioLoader = new THREE.AudioLoader();
 
 				var mesh1 = new THREE.Mesh( sphere2, material1 );
-				mesh1.position.set( 0, 0, 20 );
+				mesh1.position.set( 0, 0, 40 );
 				scene.add( mesh1 );
 
 				var sound1 = new THREE.PositionalAudio( listener );
 				audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
 					sound1.setBuffer( buffer );
-					sound1.setRefDistance( 20 );
-                                        sound1.setRolloffFactor(1);
+					sound1.setRefDistance( 40 );
+                                        sound1.setRolloffFactor(2);
 					sound1.play();
 				});
 				mesh1.add( sound1 );
