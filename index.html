@@ -156,8 +156,12 @@ scene.add( mesh );
 
 //Finally add the sound to the mesh
 mesh.add( sound );
-*/
+*/				
 
+				var listener = new THREE.AudioListener();
+				this.camera.add( listener );
+                                var sphere = new THREE.SphereGeometry( 20, 32, 16 );
+				var material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
 				var audioLoader = new THREE.AudioLoader();
 
 				var mesh1 = new THREE.Mesh( sphere, material1 );
