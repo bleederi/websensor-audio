@@ -75,18 +75,20 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			// creating a new scene
 			var scene = new THREE.Scene();
 
+			// adding a camera
+			var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+
 			init();
 			animate();
 
 			function init() {
 
-                /*        //ThreeJS scene setup below
+                        //ThreeJS scene setup below
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(this.renderer.domElement);
-			// adding a camera
-			this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-			this.camera.target = new THREE.Vector3(0, 0, 0);
-			// creation of a big sphere geometry
+			//document.body.appendChild(this.renderer.domElement);
+
+			camera.target = new THREE.Vector3(0, 0, 0);
+		/*	// creation of a big sphere geometry
 			let sphere = new THREE.SphereGeometry(100, 100, 40);
 			sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 			// creation of the sphere material
@@ -98,9 +100,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			this.scene.add(sphereMesh);
 */
 				container = document.getElementById( 'container' );
-
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.set( 0, 25, 0 );
 
 				var listener = new THREE.AudioListener();
 				camera.add( listener );
