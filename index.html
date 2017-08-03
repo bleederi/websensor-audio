@@ -77,6 +77,12 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 			// adding a camera
 			var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+			// creation of a big sphere geometry
+			var sphere = new THREE.SphereGeometry(100, 100, 40);
+
+			// creation of the sphere material
+			var sphereMaterial = new THREE.MeshBasicMaterial();
+                        var textureLoader = new THREE.TextureLoader();
 
 			init();
 			animate();
@@ -88,23 +94,17 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			//document.body.appendChild(this.renderer.domElement);
 
 			camera.target = new THREE.Vector3(0, 0, 0);
-		/*	// creation of a big sphere geometry
-			let sphere = new THREE.SphereGeometry(100, 100, 40);
 			sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-			// creation of the sphere material
-			let sphereMaterial = new THREE.MeshBasicMaterial();
-                        let textureLoader = new THREE.TextureLoader();
-			sphereMaterial.map = textureLoader.load(this.panoramasArray[this.panoramaNumber])
+			sphereMaterial.map = textureLoader.load(this.panoramasArray[this.panoramaNumber]);
 			// geometry + material = mesh (actual object)
 			let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
-			this.scene.add(sphereMesh);
-*/
+			scene.add(sphereMesh);
 				container = document.getElementById( 'container' );
 
 				var listener = new THREE.AudioListener();
 				camera.add( listener );
 
-				var sphere = new THREE.SphereGeometry( 20, 32, 16 );
+				var sphere2 = new THREE.SphereGeometry( 20, 32, 16 );
 
 				material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
 				material2 = new THREE.MeshPhongMaterial( { color: 0xff2200, shading: THREE.FlatShading, shininess: 0 } );
@@ -114,7 +114,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 				var audioLoader = new THREE.AudioLoader();
 
-				var mesh1 = new THREE.Mesh( sphere, material1 );
+				var mesh1 = new THREE.Mesh( sphere2, material1 );
 				mesh1.position.set( -250, 30, 0 );
 				scene.add( mesh1 );
 
@@ -128,7 +128,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 				//
 
-				var mesh2 = new THREE.Mesh( sphere, material2 );
+				var mesh2 = new THREE.Mesh( sphere2, material2 );
 				mesh2.position.set( 250, 30, 0 );
 				scene.add( mesh2 );
 /*
@@ -143,7 +143,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				//
 
 
-				var mesh3 = new THREE.Mesh( sphere, material3 );
+				var mesh3 = new THREE.Mesh( sphere2, material3 );
 				mesh3.position.set( 0, 30, -250 );
 				scene.add( mesh3 );
 
