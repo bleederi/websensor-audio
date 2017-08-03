@@ -102,11 +102,13 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                         shadowRoot.appendChild(clone);
                         }
                         connectedCallback() {
+			this.init();
+			this.render();
                         this.latitude;
                         this.longitude;
 
+                init() {
                         //ThreeJS scene setup below
-
 			// panoramas background
 			this.panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
 			this.panoramaNumber = Math.floor(Math.random()*this.panoramasArray.length);
@@ -185,9 +187,10 @@ mesh.add( sound );
                         this.pitch = sensor.pitch;
                         this.yaw = sensor.yaw;
                         }
-                        sensor.onactivate = () => this.render();
+                        sensor.onactivate = () => {};
                         sensor.start();
                         }
+}
 
                         render() {
                                 this.longitude = -this.yaw * 180 / Math.PI;
