@@ -78,11 +78,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				camera.add( listener );
 
 				scene = new THREE.Scene();
-				scene.fog = new THREE.FogExp2( 0x000000, 0.0025 );
-
-				light = new THREE.DirectionalLight( 0xffffff );
-				light.position.set( 0, 0.5, 1 ).normalize();
-				scene.add( light );
 
 				var sphere = new THREE.SphereGeometry( 20, 32, 16 );
 
@@ -137,11 +132,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				sound3.setVolume(0.5);
 				mesh3.add(sound3);
 
-				// analysers
-
-				analyser1 = new THREE.AudioAnalyser( sound1, 32 );
-				//analyser2 = new THREE.AudioAnalyser( sound2, 32 );
-				analyser3 = new THREE.AudioAnalyser( sound3, 32 );
 
 				// global ambient audio
 /*
@@ -153,11 +143,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 					sound4.play();
 				});
 */
-				// ground
-
-				var helper = new THREE.GridHelper( 1000, 10, 0x444444, 0x444444 );
-				helper.position.y = 0.1;
-				scene.add( helper );
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -165,20 +150,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 				container.innerHTML = "";
 				container.appendChild( renderer.domElement );
-
-
-
-				window.addEventListener( 'resize', onWindowResize, false );
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
 
 			}
 
@@ -191,12 +162,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 
 			function render() {
-
-				var delta = clock.getDelta();
-
-				material1.emissive.b = analyser1.getAverageFrequency() / 256;
-				//material2.emissive.b = analyser2.getAverageFrequency() / 256;
-				material3.emissive.b = analyser3.getAverageFrequency() / 256;
 
 				renderer.render( scene, camera );
 
