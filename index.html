@@ -132,6 +132,8 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
                         //ThreeJS scene setup below
 			renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setPixelRatio( window.devicePixelRatio );
+
 			//document.body.appendChild(this.renderer.domElement);
 
 			camera.target = new THREE.Vector3(0, 0, 0);
@@ -187,21 +189,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				sound3.setRefDistance( 20 );
 				sound3.setVolume(0.5);
 				mesh3.add(sound3);
-
-
-				// global ambient audio
-/*
-				var sound4 = new THREE.Audio( listener );
-				audioLoader.load( 'sounds/Project_Utopia.ogg', function( buffer ) {
-					sound4.setBuffer( buffer );
-					sound4.setLoop(true);
-					sound4.setVolume(0.5);
-					sound4.play();
-				});
-*/
-
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
 
 				container.innerHTML = "";
 				container.appendChild( renderer.domElement );
