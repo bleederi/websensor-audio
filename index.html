@@ -105,6 +105,7 @@ limitations under the License.
 
 			var clock = new THREE.Clock();
 			// panoramas background
+                        var panoramasFolder = "backgrounds/";
 			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
 			var panoramaNumber = Math.floor(Math.random()*this.panoramasArray.length);
 
@@ -136,7 +137,7 @@ limitations under the License.
 
 			camera.target = new THREE.Vector3(0, 0, 0);
 			sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-			sphereMaterial.map = textureLoader.load(this.panoramasArray[this.panoramaNumber]);
+			sphereMaterial.map = textureLoader.load(panoramasFolder.concat(panoramasArray[panoramaNumber]));
 			// geometry + material = mesh (actual object)
 			let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 			scene.add(sphereMesh);
@@ -145,7 +146,7 @@ limitations under the License.
 				var listener = new THREE.AudioListener();
 				camera.add( listener );
 
-				var sphere2 = new THREE.SphereGeometry( 20, 32, 16 );
+				var sphere2 = new THREE.SphereGeometry( 10, 32, 16 );
 
 				material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
 				material2 = new THREE.MeshPhongMaterial( { color: 0xff2200, shading: THREE.FlatShading, shininess: 0 } );
@@ -167,22 +168,6 @@ limitations under the License.
 					sound1.play();
 				});
 				mesh1.add( sound1 );
-
-/*
-				var mesh3 = new THREE.Mesh( sphere2, material3 );
-				mesh3.position.set( 0, 0, -100 );
-				scene.add( mesh3 );
-
-				var sound3 = new THREE.PositionalAudio( listener );
-				var oscillator = listener.context.createOscillator();
-				oscillator.type = 'sine';
-				oscillator.frequency.value = 144;
-				oscillator.start(0);
-				sound3.setNodeSource(oscillator);
-				sound3.setRefDistance( 1 );
-				sound3.setVolume(0.5);
-				mesh3.add(sound3);
-*/
 				container.innerHTML = "";
 				container.appendChild( renderer.domElement );
 
