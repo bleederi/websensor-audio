@@ -68,10 +68,6 @@ var camera, controls, scene, renderer;
 var light, pointLight;
 
 var material1, material2, material3;
-
-var analyser1, analyser2, analyser3;
-
-var clock = new THREE.Clock();
 // panoramas background
 var panoramasFolder = "backgrounds/";
 var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
@@ -115,8 +111,6 @@ scene.add(sphereMesh);
 	var sphere2 = new THREE.SphereGeometry( 10, 32, 16 );
 
 	material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
-	material2 = new THREE.MeshPhongMaterial( { color: 0xff2200, shading: THREE.FlatShading, shininess: 0 } );
-	material3 = new THREE.MeshPhongMaterial( { color: 0x6622aa, shading: THREE.FlatShading, shininess: 0 } );
 
 	// sound spheres
 
@@ -142,6 +136,7 @@ scene.add(sphereMesh);
 */
 const sensor = new InclinationSensor();
 sensor.onreading = () => {
+//Save sensor readings into variables - this step not actually necessary
 roll = sensor.roll;
 pitch = sensor.pitch;
 yaw = sensor.yaw;
