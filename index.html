@@ -92,6 +92,9 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                                 Object.assign(this, { start });
                                 }
                         }
+                        var roll = 0;
+                        var pitch = 0;
+                        var yaw = 0;
 			var container;
 			var camera, controls, scene, renderer;
 			var light, pointLight;
@@ -205,9 +208,9 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
                         const sensor = new InclinationSensor();
                         sensor.onreading = () => {
-                        this.roll = sensor.roll;
-                        this.pitch = sensor.pitch;
-                        this.yaw = sensor.yaw;
+                        roll = sensor.roll;
+                        pitch = sensor.pitch;
+                        yaw = sensor.yaw;
                         }
                         sensor.onactivate = () => this.render();
                         sensor.start();
