@@ -109,7 +109,7 @@ sphereMaterial.map = textureLoader.load(panoramasFolder.concat(panoramasArray[pa
 // geometry + material = mesh (actual object)
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
-	container = document.getElementById( 'container' );
+	const container = document.querySelector('#app-view');
 
 	var listener = new THREE.AudioListener();
 	camera.add( listener );
