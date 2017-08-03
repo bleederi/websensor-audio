@@ -126,7 +126,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                         var textureLoader = new THREE.TextureLoader();
 
 			init();
-			animate();
+			render();
 
 			function init() {
 
@@ -201,13 +201,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 			}
 
-			function animate() {
-
-				requestAnimationFrame( animate );
-				render();
-
-			}
-
 
 			function render() {
                                 longitude = -yaw * 180 / Math.PI;
@@ -221,6 +214,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                                 camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.sin(THREE.Math.degToRad(longitude));
                                 camera.lookAt(camera.target);
 				renderer.render( scene, camera );
+				requestAnimationFrame( render );
 
 			}
 
