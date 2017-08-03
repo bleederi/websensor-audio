@@ -95,6 +95,8 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
                         var roll = 0;
                         var pitch = 0;
                         var yaw = 0;
+                        var latitude=0;
+                        var longitude=0;
 			var container;
 			var camera, controls, scene, renderer;
 			var light, pointLight;
@@ -104,8 +106,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			var analyser1, analyser2, analyser3;
 
 			var clock = new THREE.Clock();
-                        var latitude=0;
-                        var longitude=0;
 			// panoramas background
 			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
 			var panoramaNumber = Math.floor(Math.random()*this.panoramasArray.length);
@@ -213,7 +213,16 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 
 			function render() {
+                                longitude = -yaw * 180 / Math.PI;
+                                latitude = roll * 180 / Math.PI - 90;
+                                // limiting latitude from -85 to 85 (cannot point to the sky or under your feet)
+                                latitude = Math.max(-85, Math.min(85, latitude));
 
+                                // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
+                                camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.cos(THREE.Math.degToRad(longitude));
+                                camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - latitude));
+                                camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.sin(THREE.Math.degToRad(longitude));
+                                camera.lookAt(camera.target);
 				renderer.render( scene, camera );
 
 			}
