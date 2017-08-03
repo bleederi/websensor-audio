@@ -54,8 +54,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 		<script>
 
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-
 			var container;
 			var camera, controls, scene, renderer;
 			var light, pointLight;
@@ -181,7 +179,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
-				controls.handleResize();
 
 			}
 
