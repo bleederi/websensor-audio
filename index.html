@@ -106,79 +106,58 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			this.render();
                         this.latitude;
                         this.longitude;
+			var container;
+			var camera, controls, scene, renderer;
+			var light, pointLight;
+
+			var material1, material2, material3;
+
+			var analyser1, analyser2, analyser3;
+
+			var clock = new THREE.Clock();
+
 
 }
                 init() {
-                        //ThreeJS scene setup below
-			// panoramas background
-			this.panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
-			this.panoramaNumber = Math.floor(Math.random()*this.panoramasArray.length);
-			// setting up the renderer
-			this.renderer = new THREE.WebGLRenderer();
-			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(this.renderer.domElement);
-			// creating a new scene
-			this.scene = new THREE.Scene();
-			// adding a camera
-			this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-			this.camera.target = new THREE.Vector3(0, 0, 0);
-			// creation of a big sphere geometry
-			let sphere = new THREE.SphereGeometry(100, 100, 40);
-			sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-			// creation of the sphere material
-			let sphereMaterial = new THREE.MeshBasicMaterial();
-                        let textureLoader = new THREE.TextureLoader();
-			sphereMaterial.map = textureLoader.load(this.panoramasArray[this.panoramaNumber])
-			// geometry + material = mesh (actual object)
-			let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
-			this.scene.add(sphereMesh);
+				container = document.getElementById( 'container' );
 
-                        /*
-                        *       Audio code below
-                        */
-/*//Create an AudioListener and add it to the camera
-var listener = new THREE.AudioListener();
-this.camera.add( listener );
-
-//Create the PositionalAudio object (passing in the listener)
-var sound = new THREE.PositionalAudio( listener );
-
-//Load a sound and set it as the PositionalAudio object's buffer
-var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
-	sound1.setBuffer( buffer );
-	sound1.setRefDistance( 20 );
-	sound1.play();
-});
-
-//Create an object for the sound to play from
-var sphere = new THREE.SphereGeometry( 20, 32, 16 );
-var material = new THREE.MeshPhongMaterial( { color: 0xff2200 } );
-var mesh = new THREE.Mesh( sphere, material );
-scene.add( mesh );
-
-//Finally add the sound to the mesh
-mesh.add( sound );
-*/		
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.set( 0, 25, 0 );
 
 				var listener = new THREE.AudioListener();
-				this.camera.add( listener );
-/*				var audioLoader = new THREE.AudioLoader();
-*/
-                                var sphere2 = new THREE.SphereGeometry( 20, 32, 16 );
-				var material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );		
+				camera.add( listener );
 
-				var mesh1 = new THREE.Mesh( sphere2, material1 );
-				mesh1.position.set( 100, 0, 0 );
-				this.scene.add( mesh1 );
-/*
+				scene = new THREE.Scene();
+				scene.fog = new THREE.FogExp2( 0x000000, 0.0025 );
+
+				light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( 0, 0.5, 1 ).normalize();
+				scene.add( light );
+
+				var sphere = new THREE.SphereGeometry( 20, 32, 16 );
+
+				material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
+				material2 = new THREE.MeshPhongMaterial( { color: 0xff2200, shading: THREE.FlatShading, shininess: 0 } );
+				material3 = new THREE.MeshPhongMaterial( { color: 0x6622aa, shading: THREE.FlatShading, shininess: 0 } );
+
+				// sound spheres
+
+				var audioLoader = new THREE.AudioLoader();
+
+				var mesh1 = new THREE.Mesh( sphere, material1 );
+				mesh1.position.set( -250, 30, 0 );
+				scene.add( mesh1 );
+
 				var sound1 = new THREE.PositionalAudio( listener );
-				audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
+				audioLoader.load( 'sounds/358232_j_s_song.ogg', function( buffer ) {
 					sound1.setBuffer( buffer );
 					sound1.setRefDistance( 20 );
 					sound1.play();
 				});
 				mesh1.add( sound1 );
+                        /*
+                        *       Audio code below
+                        */	
 
                         /*
                         *       Sensor initialization below
@@ -194,20 +173,15 @@ mesh.add( sound );
                         }
 
                         render() {
-                                this.longitude = -this.yaw * 180 / Math.PI;
-                                this.latitude = this.roll * 180 / Math.PI - 90;
-                                // limiting latitude from -85 to 85 (cannot point to the sky or under your feet)
-                                this.latitude = Math.max(-85, Math.min(85, this.latitude));
+				var delta = clock.getDelta();
 
-                                // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
-                                this.camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - this.latitude)) * Math.cos(THREE.Math.degToRad(this.longitude));
-                                this.camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - this.latitude));
-                                this.camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - this.latitude)) * Math.sin(THREE.Math.degToRad(this.longitude));
-                                this.camera.lookAt(this.camera.target);
+				controls.update( delta );
 
-                                // calling again render function
-                                this.renderer.render(this.scene, this.camera);
-                                requestAnimationFrame(() => this.render());
+				material1.emissive.b = analyser1.getAverageFrequency() / 256;
+				material2.emissive.b = analyser2.getAverageFrequency() / 256;
+				material3.emissive.b = analyser3.getAverageFrequency() / 256;
+
+				renderer.render( scene, camera );
                         }
                         });
 		</script>
