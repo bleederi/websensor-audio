@@ -164,7 +164,8 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				var sound1 = new THREE.PositionalAudio( listener );
 				audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
 					sound1.setBuffer( buffer );
-					sound1.setRefDistance( 20 );
+					sound1.setRefDistance( 1 );
+                                        sound1.setRolloffFactor(2);
 					sound1.play();
 				});
 				mesh1.add( sound1 );
@@ -180,7 +181,7 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				oscillator.frequency.value = 144;
 				oscillator.start(0);
 				sound3.setNodeSource(oscillator);
-				sound3.setRefDistance( 20 );
+				sound3.setRefDistance( 1 );
 				sound3.setVolume(0.5);
 				mesh3.add(sound3);
 
