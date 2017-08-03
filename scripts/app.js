@@ -63,7 +63,7 @@ var pitch = 0;
 var yaw = 0;
 var latitude=0;
 var longitude=0;
-var container;
+const container = document.querySelector('#app-view');
 var camera, controls, scene, renderer;
 var light, pointLight;
 
@@ -109,7 +109,6 @@ sphereMaterial.map = textureLoader.load(panoramasFolder.concat(panoramasArray[pa
 // geometry + material = mesh (actual object)
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
-	const container = document.querySelector('#app-view');
 
 	var listener = new THREE.AudioListener();
 	camera.add( listener );
