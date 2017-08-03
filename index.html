@@ -63,12 +63,40 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 			var analyser1, analyser2, analyser3;
 
 			var clock = new THREE.Clock();
+                        var latitude=0;
+                        var longitude=0;
+			// panoramas background
+			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
+			var panoramaNumber = Math.floor(Math.random()*this.panoramasArray.length);
+
+			// setting up the renderer
+			var renderer = new THREE.WebGLRenderer();
+
+			// creating a new scene
+			var scene = new THREE.Scene();
 
 			init();
 			animate();
 
 			function init() {
 
+                /*        //ThreeJS scene setup below
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(this.renderer.domElement);
+			// adding a camera
+			this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+			this.camera.target = new THREE.Vector3(0, 0, 0);
+			// creation of a big sphere geometry
+			let sphere = new THREE.SphereGeometry(100, 100, 40);
+			sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+			// creation of the sphere material
+			let sphereMaterial = new THREE.MeshBasicMaterial();
+                        let textureLoader = new THREE.TextureLoader();
+			sphereMaterial.map = textureLoader.load(this.panoramasArray[this.panoramaNumber])
+			// geometry + material = mesh (actual object)
+			let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
+			this.scene.add(sphereMesh);
+*/
 				container = document.getElementById( 'container' );
 
 				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -76,8 +104,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 
 				var listener = new THREE.AudioListener();
 				camera.add( listener );
-
-				scene = new THREE.Scene();
 
 				var sphere = new THREE.SphereGeometry( 20, 32, 16 );
 
@@ -144,7 +170,6 @@ Code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-web
 				});
 */
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
