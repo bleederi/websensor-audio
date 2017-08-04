@@ -142,7 +142,7 @@ roll = sensor.roll;
 pitch = sensor.pitch;
 yaw = sensor.yaw;
 }
-sensor.onactivate = () => this.render();
+sensor.onactivate = () => {};
 sensor.start();
 
 }
