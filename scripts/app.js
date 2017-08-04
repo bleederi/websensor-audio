@@ -18,6 +18,7 @@
  *
 */
 
+'use strict'
 
 function toEulerianAngle(quat, out)
 {
