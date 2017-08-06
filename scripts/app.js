@@ -132,7 +132,6 @@ scene.add(sphereMesh);
 		sound1.play();
 	});
 	mesh1.add( sound1 );
-    mesh1.setLinearVelocity(1,0,0);
 	container.innerHTML = "";
 	container.appendChild( renderer.domElement );
 
@@ -155,6 +154,8 @@ sensor.start();
 *   Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 */
 function render() {
+        //Move the mesh and sound
+        mesh1.translateX(0.5);
 //Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
         longitude = -yaw * 180 / Math.PI;
         latitude = roll * 180 / Math.PI - 90;
