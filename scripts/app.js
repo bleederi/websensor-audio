@@ -132,6 +132,7 @@ scene.add(sphereMesh);
 		sound1.play();
 	});
 	mesh1.add( sound1 );
+    mesh1.setLinearVelocity(1,0,0);
 	container.innerHTML = "";
 	container.appendChild( renderer.domElement );
 
