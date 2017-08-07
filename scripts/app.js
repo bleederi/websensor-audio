@@ -62,8 +62,6 @@ class InclinationSensor {
 var roll = 0;
 var pitch = 0;
 var yaw = 0;
-var latitude=0;
-var longitude=0;
 const container = document.querySelector('#app-view');
 var camera, controls, scene, renderer;
 var light, pointLight;
@@ -158,15 +156,11 @@ function render() {
         //Move the mesh and sound
         mesh1.translateX(0.5);
 //Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
-        longitude = -yaw * 180 / Math.PI;
-        latitude = roll * 180 / Math.PI - 90;
         let longitudeRad = -yaw;
         let latitudeRad = roll - Math.PI/2;
-        // limiting latitude from -85 to 85 (cannot point to the sky or under your feet)
-        latitude = Math.max(-85, Math.min(85, latitude));
+        // limiting latitude from -85 degrees to 85 degrees (cannot point to the sky or under your feet)
         latitudeRad = Math.max(-85/180 * Math.PI, Math.min(85/180 * Math.PI, latitudeRad));
         // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
-        //camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.cos(THREE.Math.degToRad(longitude));
         camera.target.x = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
         camera.target.y = 500 * Math.cos(Math.PI/2 - latitudeRad);
         camera.target.z = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
