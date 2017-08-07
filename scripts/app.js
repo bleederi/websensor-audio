@@ -69,6 +69,7 @@ var camera, controls, scene, renderer;
 var light, pointLight;
 
 var material1, material2, material3;
+var mesh1;
 // panoramas background
 var panoramasFolder = "backgrounds/";
 var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
@@ -120,7 +121,7 @@ scene.add(sphereMesh);
 
 	var audioLoader = new THREE.AudioLoader();
 
-	var mesh1 = new THREE.Mesh( sphere2, material1 );
+	mesh1 = new THREE.Mesh( sphere2, material1 );
 	mesh1.position.set( 0, 0, 40 );
 	scene.add( mesh1 );
 
