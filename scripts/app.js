@@ -168,8 +168,8 @@ function render() {
         // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
         //camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.cos(THREE.Math.degToRad(longitude));
         camera.target.x = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-        camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - latitude));
-        camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.sin(THREE.Math.degToRad(longitude));
+        camera.target.y = 500 * Math.cos(Math.PI/2 - latitudeRad);
+        camera.target.z = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
         camera.lookAt(camera.target);
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
