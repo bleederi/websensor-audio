@@ -92,6 +92,9 @@ var textureLoader = new THREE.TextureLoader();
 init();
 render();
 
+/*
+*   Sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
+*/
 function init() {
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -147,8 +150,12 @@ sensor.start();
 
 }
 
-
+/*
+*   Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
+*/
 function render() {
+        //Move the mesh and sound
+        mesh1.translateX(0.5);
 //Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
         longitude = -yaw * 180 / Math.PI;
         latitude = roll * 180 / Math.PI - 90;
