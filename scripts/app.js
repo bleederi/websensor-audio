@@ -34,7 +34,7 @@ class InclinationSensor {
         const start = () => sensor.start();
         Object.assign(this, { start });
         }
-        roll() {
+/*        roll() {
                 return this.euler[0];
         }
         pitch() {
@@ -42,7 +42,7 @@ class InclinationSensor {
         } 
         yaw() {
                 return this.euler[2];
-        }
+        }*/
 }
 const container = document.querySelector('#app-view');
 var camera, controls, scene, renderer;
@@ -127,7 +127,7 @@ sensor.start();
 */
 function render() {
         //Move the mesh and sound
-        mesh1.translateX(0.5);
+        //mesh1.translateX(0.5);
 //Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
         /*let longitudeRad = -sensor.yaw;
         let latitudeRad = sensor.roll - Math.PI/2;
