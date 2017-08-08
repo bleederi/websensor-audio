@@ -55,7 +55,6 @@ const container = document.querySelector('#app-view');
 var sensor = null;
 
 var material1;
-var mesh1;
 var image = "beach_dinner.jpg";
 
 //Sets up the required THREE.js variables
@@ -63,17 +62,18 @@ var renderer = new THREE.WebGLRenderer();
 var scene = new THREE.Scene();
 
 //Camera setup
-const cameraConstant = 200;
-const fov = 75;
+var cameraConstant = 200;
+var fov = 75;
 var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, cameraConstant);
 camera.target = new THREE.Vector3(0, 0, 0);
 
 //The sphere where the image will be projected
 var sphere = new THREE.SphereGeometry(100, 100, 40);
 
-//Creation of the sphere material
-var sphereMaterial = new THREE.MeshBasicMaterial();
+//TextureLoader for loading the image
 var textureLoader = new THREE.TextureLoader();
+//AudioLoader for loading audio
+var audioLoader = new THREE.AudioLoader();
 
 init();
 render();
@@ -85,27 +85,28 @@ function init() {
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
 
+//Creating the sphere for the image
 sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
+let sphereMaterial = new THREE.MeshBasicMaterial();
 sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
 // Combining geometry and material produces a mesh we can add to the scene
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
 //Add audio listener to the camera so we can hear the sound
-var listener = new THREE.AudioListener();
+let listener = new THREE.AudioListener();
 camera.add( listener );
 
 //The sound needs to be attached to a mesh in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
 material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00 } );
 
-var audioLoader = new THREE.AudioLoader();
 
-mesh1 = new THREE.Mesh( new THREE.SphereGeometry( 10, 32, 16 ), material1 );
-mesh1.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
-scene.add( mesh1 );
+let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), material1 );
+soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
+scene.add( soundmesh );
 
 //Here the sound is loaded and attached to the mesh
-var sound = new THREE.PositionalAudio( listener );
+let sound = new THREE.PositionalAudio( listener );
 audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop(true);
@@ -113,10 +114,9 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
         sound.setRolloffFactor(2);
 	sound.play();
 });
-mesh1.add( sound );
+soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
-
 
 //Sensor setup below
 sensor = new InclinationSensor();
