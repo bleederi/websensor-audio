@@ -1,7 +1,6 @@
 'use strict';
 
-//      This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
-
+//This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
 class InclinationSensor {
         constructor() {
         this.sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
@@ -51,10 +50,10 @@ class InclinationSensor {
                 this.onreading_ = func;  
         }
 }
+
 const container = document.querySelector('#app-view');
 var sensor = null;
 
-var material1;
 var image = "beach_dinner.jpg";
 
 //Sets up the required THREE.js variables
@@ -85,11 +84,11 @@ function init() {
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
 
-//Creating the sphere for the image
+//Creating the sphere for the image and adding it to the scene
 sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
 let sphereMaterial = new THREE.MeshBasicMaterial();
 sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
-// Combining geometry and material produces a mesh we can add to the scene
+// Combining geometry and material produces the mesh with the image as its material
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
@@ -97,8 +96,8 @@ scene.add(sphereMesh);
 let listener = new THREE.AudioListener();
 camera.add( listener );
 
-//The sound needs to be attached to a mesh in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
-let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshPhongMaterial() );
+//The sound needs to be attached to a mesh, here an invisible one, in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
+let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshPhongMaterial() );    //The mesh is invisible by default
 soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
 scene.add( soundmesh );
 
@@ -118,7 +117,6 @@ container.appendChild( renderer.domElement );
 //Sensor setup below
 sensor = new InclinationSensor();
 sensor.start();
-
 }
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
