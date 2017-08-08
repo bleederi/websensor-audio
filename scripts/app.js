@@ -51,7 +51,7 @@ var camera, controls, scene, renderer;
 var material1, material2, material3;
 var mesh1;
 // panoramas background
-var panoramasArray = "01.jpg";
+var image = "01.jpg";
 
 // setting up the renderer
 var renderer = new THREE.WebGLRenderer();
@@ -81,12 +81,10 @@ function init() {
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
 
-//document.body.appendChild(this.renderer.domElement);
-
 camera.target = new THREE.Vector3(0, 0, 0);
-sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-sphereMaterial.map = textureLoader.load(panoramasArray);
-// geometry + material = mesh (actual object)
+sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
+sphereMaterial.map = textureLoader.load(image);
+// Combining geometry and material produces a mesh we can add to the scene
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
@@ -121,7 +119,6 @@ scene.add(sphereMesh);
 */
 sensor = new InclinationSensor();
 sensor.start();
-console.log(sensor.pitch);
 
 }
 
