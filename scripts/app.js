@@ -5,15 +5,6 @@ class InclinationSensor {
         const sensor = new AbsoluteOrientationSensor({ frequency: 60 });
         const mat4 = new Float32Array(16);
         const euler = new Float32Array(3);
-        get roll() {
-                return this.roll;
-        }
-        get pitch() {;
-                return this.pitch;
-        } 
-        get yaw() {
-                return this.yaw;
-        }
         sensor.onreading = () => {
                 sensor.populateMatrix(mat4);
                 toEulerAngle(sensor.quaternion, euler);
@@ -42,6 +33,15 @@ class InclinationSensor {
         }
         const start = () => sensor.start();
         Object.assign(this, { start });
+        }
+        get roll() {
+                return this.roll;
+        }
+        get pitch() {;
+                return this.pitch;
+        } 
+        get yaw() {
+                return this.yaw;
         }
 }
 const container = document.querySelector('#app-view');
