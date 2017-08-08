@@ -80,6 +80,7 @@ render();
 //This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 function init() {
 
+screen.orientation.lock('portrait');
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
