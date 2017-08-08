@@ -128,9 +128,15 @@ container.appendChild( renderer.domElement );
 screen.orientation.addEventListener("change", show);
 
 
-//Sensor setup below
+//Sensor setup below - try-catch only for testing
+try {
 sensor = new InclinationSensor();
 sensor.start();
+}
+catch(err)
+{
+console.log(err);
+}
 }
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
