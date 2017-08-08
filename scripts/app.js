@@ -80,7 +80,6 @@ render();
 //This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 function init() {
 
-screen.orientation.lock('portrait');
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -114,6 +113,10 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
 soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
+if (container.requestFullscreen) {
+  container.requestFullscreen();
+}
+screen.orientation.lock('portrait');
 
 //Sensor setup below
 sensor = new InclinationSensor();
