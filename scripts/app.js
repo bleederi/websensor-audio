@@ -33,7 +33,7 @@ class InclinationSensor {
         }
         }
         start() {
-                sensor_.start();
+                this.start();
                 Object.assign(this, { start });     
         }
         get roll() {
