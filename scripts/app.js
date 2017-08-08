@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
 *       Sensor class
@@ -32,8 +32,8 @@ class InclinationSensor {
                 if (this.onreading_) this.onreading_();
         };
         }
-        start() { this.sensor_.start(); };
-        stop() { this.sensor_.stop(); };
+        start() { this.sensor_.start(); }
+        stop() { this.sensor_.stop(); }
         get roll() {
                 return this.roll_;
         }
@@ -55,12 +55,12 @@ class InclinationSensor {
 }
 const container = document.querySelector('#app-view');
 var sensor = null;
-var camera, controls, scene, renderer;
+var camera, scene, renderer;
 
 var material1;
 var mesh1;
 // panoramas background
-var image = "01.jpg";
+var image = "beach_dinner.jpg";
 
 // setting up the renderer
 var renderer = new THREE.WebGLRenderer();
@@ -114,7 +114,7 @@ mesh1.position.set( 0, 0, 40 );
 scene.add( mesh1 );
 
 var sound1 = new THREE.PositionalAudio( listener );
-audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
+audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound1.setBuffer( buffer );
 	sound1.setRefDistance( 40 );
         sound1.setRolloffFactor(2);
