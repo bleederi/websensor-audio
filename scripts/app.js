@@ -31,10 +31,9 @@ class InclinationSensor {
         sensor_.onerror = () => {
                 if (this.onerror) this.onerror();
         }
-        //Object.assign(this, { start });
         }
         start() {
-                sensor.start();
+                Object.assign(this, { start });
         }
         get roll() {
                 return this.euler[0];
