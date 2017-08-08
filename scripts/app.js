@@ -93,15 +93,12 @@ sphereMaterial.map = textureLoader.load(image); //Use the image as the material 
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
-//Add audio listener to the camera so we can hear the sound
+//Add an audio listener to the camera so we can hear the sound
 let listener = new THREE.AudioListener();
 camera.add( listener );
 
 //The sound needs to be attached to a mesh in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
-material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00 } );
-
-
-let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), material1 );
+let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshPhongMaterial() );
 soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
 scene.add( soundmesh );
 
@@ -111,7 +108,7 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop(true);
 	sound.setRefDistance( 40 );
-        sound.setRolloffFactor(2);
+        sound.setRolloffFactor(1);
 	sound.play();
 });
 soundmesh.add( sound );
