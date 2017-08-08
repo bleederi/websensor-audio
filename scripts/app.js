@@ -1,8 +1,6 @@
 'use strict';
 
-/*
-*       Sensor class
-*/
+//      This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
 
 class InclinationSensor {
         constructor() {
@@ -55,64 +53,58 @@ class InclinationSensor {
 }
 const container = document.querySelector('#app-view');
 var sensor = null;
-var camera, scene, renderer;
 
 var material1;
 var mesh1;
-// panoramas background
 var image = "beach_dinner.jpg";
 
-// setting up the renderer
+//Sets up the required THREE.js variables
 var renderer = new THREE.WebGLRenderer();
-
-// creating a new scene
 var scene = new THREE.Scene();
 
-// adding a camera
+//Camera setup
 const cameraConstant = 200;
 const fov = 75;
 var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, cameraConstant);
-// creation of a big sphere geometry
+camera.target = new THREE.Vector3(0, 0, 0);
+
+//The sphere where the image will be projected
 var sphere = new THREE.SphereGeometry(100, 100, 40);
 
-// creation of the sphere material
+//Creation of the sphere material
 var sphereMaterial = new THREE.MeshBasicMaterial();
 var textureLoader = new THREE.TextureLoader();
 
 init();
 render();
 
-/*
-*   Sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
-*/
+//This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 function init() {
 
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
 
-camera.target = new THREE.Vector3(0, 0, 0);
 sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
-sphereMaterial.map = textureLoader.load(image);
+sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
 // Combining geometry and material produces a mesh we can add to the scene
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
+//Add audio listener to the camera so we can hear the sound
 var listener = new THREE.AudioListener();
 camera.add( listener );
 
-var sphere2 = new THREE.SphereGeometry( 10, 32, 16 );
-
-material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
-
-// sound sphere
+//The sound needs to be attached to a mesh in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
+material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00 } );
 
 var audioLoader = new THREE.AudioLoader();
 
-mesh1 = new THREE.Mesh( sphere2, material1 );
-mesh1.position.set( 40, 0, 0 );
+mesh1 = new THREE.Mesh( new THREE.SphereGeometry( 10, 32, 16 ), material1 );
+mesh1.position.set( 40, 0, 0 ); //The position where the sound will come from, important for directional sound
 scene.add( mesh1 );
 
+//Here the sound is loaded and attached to the mesh
 var sound1 = new THREE.PositionalAudio( listener );
 audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound1.setBuffer( buffer );
@@ -125,21 +117,17 @@ mesh1.add( sound1 );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
-/*
-*       Sensor setup below
-*/
+
+//Sensor setup below
 sensor = new InclinationSensor();
 sensor.start();
 
 }
 
-/*
-*   Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
-*/
+//Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
         let longitudeRad = -sensor.yaw;
         let latitudeRad = sensor.roll - Math.PI/2;
-        // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
         camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
         camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
         camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
