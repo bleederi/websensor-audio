@@ -33,7 +33,8 @@ class InclinationSensor {
         }
         }
         start() {
-                Object.assign(this, { start });
+                sensor_.start();
+                Object.assign(this, { start });     
         }
         get roll() {
                 return this.euler[0];
