@@ -5,9 +5,9 @@ class InclinationSensor {
         const sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
         const mat4 = new Float32Array(16);
         this.euler = new Float32Array(3);
-        sensor.onreading = () => {
+        sensor_.onreading = () => {
                 sensor_.populateMatrix(mat4);
-                let quat = sensor.quaternion;
+                let quat = sensor_.quaternion;
                 //Convert to Euler angles
                 const ysqr = quat[1] ** 2;
                 // Roll (x-axis rotation).
