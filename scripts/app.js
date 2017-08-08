@@ -1,54 +1,63 @@
 'use strict'
 
+/*
+*       Sensor class
+*/
+
 class InclinationSensor {
         constructor() {
-        const sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
-        const mat4 = new Float32Array(16);
-        this.euler = new Float32Array(3);
-        sensor_.onreading = () => {
-                sensor_.populateMatrix(mat4);
-                let quat = sensor_.quaternion;
+        this.sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
+        this.mat4_ = new Float32Array(16);
+        this.roll_ = 0;
+        this.pitch_ = 0;
+        this.yaw_ = 0;
+        this.sensor_.onreading = () => {
+                this.sensor_.populateMatrix(this.mat4_);
+                let quat = this.sensor_.quaternion;
                 //Convert to Euler angles
                 const ysqr = quat[1] ** 2;
                 // Roll (x-axis rotation).
                 const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
                 const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
-                this.euler[0] = Math.atan2(t0, t1);
+                this.roll_ = Math.atan2(t0, t1);
                 // Pitch (y-axis rotation).
                 let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
                 t2 = t2 > 1 ? 1 : t2;
                 t2 = t2 < -1 ? -1 : t2;
-                this.euler[1] = Math.asin(t2);
+                this.pitch_ = Math.asin(t2);
                 // Yaw (z-axis rotation).
                 const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
                 const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
-                this.euler[2] = Math.atan2(t3, t4);
-                if (this.onreading) this.onreading();
+                this.yaw_ = Math.atan2(t3, t4);
+                if (this.onreading_) this.onreading_();
         };
-        sensor_.onactivate = () => {
-                if (this.onactivate) this.onactivate();
         }
-        sensor_.onerror = () => {
-                if (this.onerror) this.onerror();
-        }
--        const start = () => sensor.start();
--        Object.assign(this, { start });
-        }
+        start() { this.sensor_.start(); };
+        stop() { this.sensor_.stop(); };
         get roll() {
-                return this.euler[0];
+                return this.roll_;
         }
         get pitch() {
-                return this.euler[1];
+                return this.pitch_;
         } 
         get yaw() {
-                return this.euler[2];
+                return this.yaw_;
+        }
+        set onactivate(func) {
+                this.sensor_.onactivate_ = func;
+        }
+        set onerror(err) {
+                this.sensor_.onerror_ = err;
+        }
+        set onreading (func) {
+                this.onreading_ = func;  
         }
 }
 const container = document.querySelector('#app-view');
 var sensor = null;
 var camera, controls, scene, renderer;
 
-var material1, material2, material3;
+var material1;
 var mesh1;
 // panoramas background
 var image = "01.jpg";
@@ -61,7 +70,8 @@ var scene = new THREE.Scene();
 
 // adding a camera
 const cameraConstant = 200;
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, cameraConstant);
+const fov = 75;
+var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, cameraConstant);
 // creation of a big sphere geometry
 var sphere = new THREE.SphereGeometry(100, 100, 40);
 
@@ -88,31 +98,31 @@ sphereMaterial.map = textureLoader.load(image);
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
-	var listener = new THREE.AudioListener();
-	camera.add( listener );
+var listener = new THREE.AudioListener();
+camera.add( listener );
 
-	var sphere2 = new THREE.SphereGeometry( 10, 32, 16 );
+var sphere2 = new THREE.SphereGeometry( 10, 32, 16 );
 
-	material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
+material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatShading, shininess: 0 } );
 
-	// sound spheres
+// sound sphere
 
-	var audioLoader = new THREE.AudioLoader();
+var audioLoader = new THREE.AudioLoader();
 
-	mesh1 = new THREE.Mesh( sphere2, material1 );
-	mesh1.position.set( 0, 0, 40 );
-	scene.add( mesh1 );
+mesh1 = new THREE.Mesh( sphere2, material1 );
+mesh1.position.set( 0, 0, 40 );
+scene.add( mesh1 );
 
-	var sound1 = new THREE.PositionalAudio( listener );
-	audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
-		sound1.setBuffer( buffer );
-		sound1.setRefDistance( 40 );
-                sound1.setRolloffFactor(2);
-		sound1.play();
-	});
-	mesh1.add( sound1 );
-	container.innerHTML = "";
-	container.appendChild( renderer.domElement );
+var sound1 = new THREE.PositionalAudio( listener );
+audioLoader.load( 'sounds/baby-music-box_daniel-simion.wav', function( buffer ) {
+	sound1.setBuffer( buffer );
+	sound1.setRefDistance( 40 );
+        sound1.setRolloffFactor(2);
+	sound1.play();
+});
+mesh1.add( sound1 );
+container.innerHTML = "";
+container.appendChild( renderer.domElement );
 
 /*
 *       Sensor setup below
@@ -126,8 +136,6 @@ sensor.start();
 *   Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 */
 function render() {
-        //Move the mesh and sound
-        //mesh1.translateX(0.5);
         let longitudeRad = -sensor.yaw;
         let latitudeRad = sensor.roll - Math.PI/2;
         // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
