@@ -110,12 +110,13 @@ material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00, shading: THREE.FlatS
 var audioLoader = new THREE.AudioLoader();
 
 mesh1 = new THREE.Mesh( sphere2, material1 );
-mesh1.position.set( 0, 0, 40 );
+mesh1.position.set( 40, 0, 0 );
 scene.add( mesh1 );
 
 var sound1 = new THREE.PositionalAudio( listener );
 audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound1.setBuffer( buffer );
+	sound.setLoop(true);
 	sound1.setRefDistance( 40 );
         sound1.setRolloffFactor(2);
 	sound1.play();
