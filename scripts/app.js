@@ -6,7 +6,7 @@ class InclinationSensor {
         const mat4 = new Float32Array(16);
         this.euler = new Float32Array(3);
         sensor.onreading = () => {
-                sensor.populateMatrix(mat4);
+                sensor_.populateMatrix(mat4);
                 let quat = sensor.quaternion;
                 //Convert to Euler angles
                 const ysqr = quat[1] ** 2;
@@ -25,14 +25,16 @@ class InclinationSensor {
                 this.euler[2] = Math.atan2(t3, t4);
                 if (this.onreading) this.onreading();
         };
-        sensor.onactivate = () => {
+        sensor_.onactivate = () => {
                 if (this.onactivate) this.onactivate();
         }
-        sensor.onerror = () => {
+        sensor_.onerror = () => {
                 if (this.onerror) this.onerror();
         }
-        const start = () => sensor.start();
-        Object.assign(this, { start });
+        start() {
+                sensor.start();
+        }
+        //Object.assign(this, { start });
         }
         get roll() {
                 return this.euler[0];
