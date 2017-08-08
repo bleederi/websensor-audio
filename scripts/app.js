@@ -82,7 +82,7 @@ function init() {
 
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setPixelRatio( window.devicePixelRatio );
 
 //Creating the sphere for the image and adding it to the scene
 sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
@@ -114,8 +114,17 @@ soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
+
+  var show = function() {
+        console.log("Orientation type is " + screen.orientation.type);
+        console.log("Orientation angle is " + screen.orientation.angle);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio( window.devicePixelRatio );
+  }
 //document.body.requestFullscreen();
 //screen.orientation.lock('portrait');
+screen.orientation.addEventListener("change", show);
+
 
 //Sensor setup below
 sensor = new InclinationSensor();
