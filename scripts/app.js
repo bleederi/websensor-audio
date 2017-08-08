@@ -113,9 +113,8 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
 soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
-if (container.requestFullscreen) {
-  container.requestFullscreen();
-}
+
+document.body.requestFullscreen();
 screen.orientation.lock('portrait');
 
 //Sensor setup below
