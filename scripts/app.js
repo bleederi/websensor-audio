@@ -101,19 +101,19 @@ material1 = new THREE.MeshPhongMaterial( { color: 0xffaa00 } );
 var audioLoader = new THREE.AudioLoader();
 
 mesh1 = new THREE.Mesh( new THREE.SphereGeometry( 10, 32, 16 ), material1 );
-mesh1.position.set( 40, 0, 0 ); //The position where the sound will come from, important for directional sound
+mesh1.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
 scene.add( mesh1 );
 
 //Here the sound is loaded and attached to the mesh
-var sound1 = new THREE.PositionalAudio( listener );
+var sound = new THREE.PositionalAudio( listener );
 audioLoader.load( 'ocean.mp3', function( buffer ) {
-	sound1.setBuffer( buffer );
+	sound.setBuffer( buffer );
 	sound.setLoop(true);
-	sound1.setRefDistance( 40 );
-        sound1.setRolloffFactor(2);
-	sound1.play();
+	sound.setRefDistance( 40 );
+        sound.setRolloffFactor(2);
+	sound.play();
 });
-mesh1.add( sound1 );
+mesh1.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
