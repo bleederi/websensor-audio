@@ -120,6 +120,8 @@ container.appendChild( renderer.domElement );
         console.log("Orientation angle is " + screen.orientation.angle);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio( window.devicePixelRatio );
+        sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
+        sphereMaterial.needsUpdate = true;
   }
 //document.body.requestFullscreen();
 //screen.orientation.lock('portrait');
