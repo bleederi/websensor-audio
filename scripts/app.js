@@ -31,6 +31,9 @@ class InclinationSensor {
         sensor.onerror = () => {
                 if (this.onerror) this.onerror();
         }
+        const start = () => sensor.start();
+        Object.assign(this, { start });
+        }
         roll() {
                 return this.euler[0];
         }
@@ -39,9 +42,6 @@ class InclinationSensor {
         } 
         yaw() {
                 return this.euler[2];
-        }
-        const start = () => sensor.start();
-        Object.assign(this, { start });
         }
 }
 const container = document.querySelector('#app-view');
