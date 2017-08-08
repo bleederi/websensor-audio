@@ -1,10 +1,12 @@
 'use strict'
 
+var sensor = null;
+
 class InclinationSensor {
         constructor() {
         const sensor = new AbsoluteOrientationSensor({ frequency: 60 });
         const mat4 = new Float32Array(16);
-        const euler = new Float32Array(3);
+        this.euler = new Float32Array(3);
         sensor.onreading = () => {
                 sensor.populateMatrix(mat4);
                 let quat = sensor.quaternion;
@@ -13,16 +15,16 @@ class InclinationSensor {
                 // Roll (x-axis rotation).
                 const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
                 const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
-                euler[0] = Math.atan2(t0, t1);
+                this.euler[0] = Math.atan2(t0, t1);
                 // Pitch (y-axis rotation).
                 let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
                 t2 = t2 > 1 ? 1 : t2;
                 t2 = t2 < -1 ? -1 : t2;
-                euler[1] = Math.asin(t2);
+                this.euler[1] = Math.asin(t2);
                 // Yaw (z-axis rotation).
                 const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
                 const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
-                euler[2] = Math.atan2(t3, t4);
+                this.euler[2] = Math.atan2(t3, t4);
                 if (this.onreading) this.onreading();
         };
         sensor.onactivate = () => {
@@ -34,15 +36,15 @@ class InclinationSensor {
         const start = () => sensor.start();
         Object.assign(this, { start });
         }
-/*        roll() {
+        get roll() {
                 return this.euler[0];
         }
-        pitch() {
+        get pitch() {
                 return this.euler[1];
         } 
-        yaw() {
+        get yaw() {
                 return this.euler[2];
-        }*/
+        }
 }
 const container = document.querySelector('#app-view');
 var camera, controls, scene, renderer;
@@ -117,8 +119,9 @@ scene.add(sphereMesh);
 /*
 *       Sensor setup below
 */
-const sensor = new InclinationSensor();
+sensor = new InclinationSensor();
 sensor.start();
+console.log(sensor.pitch);
 
 }
 
@@ -129,7 +132,7 @@ function render() {
         //Move the mesh and sound
         //mesh1.translateX(0.5);
 //Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
-        /*let longitudeRad = -sensor.yaw;
+        let longitudeRad = -sensor.yaw;
         let latitudeRad = sensor.roll - Math.PI/2;
         // limiting latitude from -85 degrees to 85 degrees (cannot point to the sky or under your feet)
         latitudeRad = Math.max(-85/180 * Math.PI, Math.min(85/180 * Math.PI, latitudeRad));
@@ -137,7 +140,7 @@ function render() {
         camera.target.x = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
         camera.target.y = 500 * Math.cos(Math.PI/2 - latitudeRad);
         camera.target.z = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
-        camera.lookAt(camera.target);*/
+        camera.lookAt(camera.target);
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
 
