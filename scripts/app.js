@@ -129,7 +129,7 @@ function render() {
         //Move the mesh and sound
         mesh1.translateX(0.5);
 //Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
-        let longitudeRad = -sensor.yaw;
+        /*let longitudeRad = -sensor.yaw;
         let latitudeRad = sensor.roll - Math.PI/2;
         // limiting latitude from -85 degrees to 85 degrees (cannot point to the sky or under your feet)
         latitudeRad = Math.max(-85/180 * Math.PI, Math.min(85/180 * Math.PI, latitudeRad));
@@ -137,7 +137,7 @@ function render() {
         camera.target.x = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
         camera.target.y = 500 * Math.cos(Math.PI/2 - latitudeRad);
         camera.target.z = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
-        camera.lookAt(camera.target);
+        camera.lookAt(camera.target);*/
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
 
