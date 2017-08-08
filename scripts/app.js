@@ -1,10 +1,8 @@
 'use strict'
 
-var sensor = null;
-
 class InclinationSensor {
         constructor() {
-        const sensor = new AbsoluteOrientationSensor({ frequency: 60 });
+        const sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
         const mat4 = new Float32Array(16);
         this.euler = new Float32Array(3);
         sensor.onreading = () => {
@@ -47,8 +45,8 @@ class InclinationSensor {
         }
 }
 const container = document.querySelector('#app-view');
+var sensor = null;
 var camera, controls, scene, renderer;
-var light, pointLight;
 
 var material1, material2, material3;
 var mesh1;
@@ -62,7 +60,8 @@ var renderer = new THREE.WebGLRenderer();
 var scene = new THREE.Scene();
 
 // adding a camera
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+const cameraConstant = 200;
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, cameraConstant);
 // creation of a big sphere geometry
 var sphere = new THREE.SphereGeometry(100, 100, 40);
 
@@ -77,6 +76,7 @@ render();
 *   Sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 */
 function init() {
+
 //ThreeJS scene setup below
 renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -131,15 +131,12 @@ console.log(sensor.pitch);
 function render() {
         //Move the mesh and sound
         //mesh1.translateX(0.5);
-//Camera code based on tutorial from http://www.emanueleferonato.com/2014/12/10/html5-webgl-360-degrees-panorama-viewer-with-three-js/
         let longitudeRad = -sensor.yaw;
         let latitudeRad = sensor.roll - Math.PI/2;
-        // limiting latitude from -85 degrees to 85 degrees (cannot point to the sky or under your feet)
-        latitudeRad = Math.max(-85/180 * Math.PI, Math.min(85/180 * Math.PI, latitudeRad));
         // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
-        camera.target.x = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-        camera.target.y = 500 * Math.cos(Math.PI/2 - latitudeRad);
-        camera.target.z = 500 * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
+        camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
+        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
+        camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
         camera.lookAt(camera.target);
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
