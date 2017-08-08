@@ -114,8 +114,8 @@ soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
-document.body.requestFullscreen();
-screen.orientation.lock('portrait');
+//document.body.requestFullscreen();
+//screen.orientation.lock('portrait');
 
 //Sensor setup below
 sensor = new InclinationSensor();
