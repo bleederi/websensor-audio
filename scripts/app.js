@@ -31,14 +31,14 @@ class InclinationSensor {
         sensor.onerror = () => {
                 if (this.onerror) this.onerror();
         }
-        get roll() {
-                return this.roll;
+        get roll () {
+                return this.euler[0];
         }
-        get pitch() {;
-                return this.pitch;
+        get pitch () {;
+                return this.euler[1];
         } 
-        get yaw() {
-                return this.yaw;
+        get yaw () {
+                return this.euler[2];
         }
         const start = () => sensor.start();
         Object.assign(this, { start });
