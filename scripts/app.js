@@ -118,7 +118,7 @@ container.appendChild( renderer.domElement );
   var show = function() {
         console.log("Orientation type is " + screen.orientation.type);
         console.log("Orientation angle is " + screen.orientation.angle);
-        console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:");
+        console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:" renderer.domElement.width, renderer.domElement.height);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
         //renderer.setSize(window.innerWidth, window.innerHeight);
