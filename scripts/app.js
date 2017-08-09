@@ -165,11 +165,11 @@ function render() {
         else if(screen.orientation.angle === 90)
         {
                 //console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                if(yaw < 0)
+                if(sensor.yaw < 0)
                 {
                         console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
                 }
-                else if (yaw >= 0)
+                else if (sensor.yaw >= 0)
                 {
                         console.log(sensor.roll, sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
                         
