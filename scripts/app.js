@@ -189,7 +189,7 @@ function render() {
         }        
 
         //camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-        //camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
+        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
         //camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
         camera.lookAt(camera.target);
 	renderer.render( scene, camera );
