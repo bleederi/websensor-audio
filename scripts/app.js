@@ -135,7 +135,7 @@ renderer.setSize(width, height);
         //sphereMaterial.needsUpdate = true;
   }
 //document.body.requestFullscreen();
-//screen.orientation.lock('portrait');
+//s                                                                                                      creen.orientation.lock('portrait');
 screen.orientation.addEventListener("change", show);
 
 
@@ -151,6 +151,8 @@ sensor = null;
 }
 container.requestFullscreen();
 render();
+
+                var interval=window.setInterval(update_debug,100);
 }
 //Latitude supposed to go -pi to pi down->up
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
@@ -196,4 +198,9 @@ function render() {
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
 
+}
+
+function update_debug()
+{
+                        document.getElementById("ori").textContent = `Orientation: ${sensor.roll} ${sensor.pitch} ${sensor.yaw}`;
 }
