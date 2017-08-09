@@ -101,7 +101,7 @@ soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come fr
 scene.add( soundmesh );
 
 //Here the sound is loaded and attached to the mesh
-let sound = new THREE.PositionalAudio( listener );
+/*let sound = new THREE.PositionalAudio( listener );
 audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop(true);
@@ -109,7 +109,7 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
         sound.setRolloffFactor(1);
 	sound.play();
 });
-soundmesh.add( sound );
+soundmesh.add( sound );*/
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
@@ -189,7 +189,7 @@ function render() {
         }        
 
         //camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
+        //camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
         //camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
         camera.lookAt(camera.target);
 	renderer.render( scene, camera );
