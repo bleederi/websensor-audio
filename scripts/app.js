@@ -171,7 +171,7 @@ function render() {
                 }
                 else if (sensor.yaw >= 0)
                 {
-                        console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2), sensor.yaw);
+                        console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2, sensor.yaw);
                         
                 }
                 var longitudeRad = -sensor.yaw;
