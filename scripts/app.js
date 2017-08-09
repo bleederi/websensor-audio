@@ -96,7 +96,7 @@ let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshPhongM
 soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
 scene.add( soundmesh );
 
-/*
+
 //Add an audio listener to the camera so we can hear the sound
 let listener = new THREE.AudioListener();
 camera.add( listener ); //This causes error in landscape mode!
@@ -110,7 +110,7 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
         sound.setRolloffFactor(1);
 	sound.play();
 });
-soundmesh.add( sound );*/
+soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
