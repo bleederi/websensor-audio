@@ -156,53 +156,41 @@ render();
 function render() {
         if(sensor !== null)
         {
-        if(screen.orientation.angle === 0)
-        {
-                console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                var longitudeRad = -sensor.yaw;
-                var latitudeRad = sensor.roll - Math.PI/2;
-        }
-        else if(screen.orientation.angle === 90)
-        {
-                //console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                if(sensor.yaw < 0)
+                if(screen.orientation.angle === 0)
                 {
-                        console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
+                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
+                        var longitudeRad = -sensor.yaw;
+                        var latitudeRad = sensor.roll - Math.PI/2;
                 }
-                else if (sensor.yaw >= 0)
+                else if(screen.orientation.angle === 90)
                 {
-                        console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.PI/2) - Math.PI/2, sensor.yaw);
-                        latitudeRad = Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2;
+                        //console.log(sensor.roll, sensor.pitch, sensor.yaw);
+                        if(sensor.yaw < 0)
+                        {
+                                console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
+                                var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2;
+                        }
+                        else if (sensor.yaw >= 0)
+                        {
+                                console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.PI/2) - Math.PI/2, sensor.yaw);
+                                var latitudeRad = Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2;
+                                
+                        }
+                        //var longitudeRad = -sensor.yaw;
+                        //var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2; //kun yaw < 0 
                         
-                }
-                var longitudeRad = -sensor.yaw;
-                var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2; //kun yaw < 0 
                 
-        
-        }
+                }
         }
         else
         {
                 var longitudeRad = 0;
                 var latitudeRad = 0;       
         }        
-       /* if(screen.orientation.angle === 0)
-        {
-                camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-                camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
-                camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
-        }
-        else if (screen.orientation.angle === 90)       //pitch goes 0->-Math.PI->0, always < 0 when moving down->up
-        {
-                if(sensor.yaw < 0)
-                {
-                        
-                }
-                //container.canvas.rotate();
-                camera.target.x = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
-                camera.target.y = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-                camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
-        }*/
+
+        camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
+        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
+        camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
         camera.lookAt(camera.target);
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
