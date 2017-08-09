@@ -123,6 +123,7 @@ container.appendChild( renderer.domElement );
     camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio( window.devicePixelRatio );
+        render();
     //canvas.style.width = window.innerWidth;
     //canvas.style.height = window.innerHeight;   
         //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
