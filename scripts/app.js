@@ -171,7 +171,8 @@ function render() {
                 }
                 else if (yaw >= 0)
                 {
-                        sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2
+                        console.log(sensor.roll, sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
+                        
                 }
                 var longitudeRad = -sensor.yaw;
                 var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2; //kun yaw < 0 
