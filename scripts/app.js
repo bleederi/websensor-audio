@@ -91,17 +91,18 @@ sphereMaterial.map = textureLoader.load(image); //Use the image as the material 
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 scene.add(sphereMesh);
 
-//Add an audio listener to the camera so we can hear the sound
-let listener = new THREE.AudioListener();
-camera.add( listener );
-
 //The sound needs to be attached to a mesh, here an invisible one, in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
 let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshPhongMaterial() );    //The mesh is invisible by default
 soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
 scene.add( soundmesh );
 
+/*
+//Add an audio listener to the camera so we can hear the sound
+let listener = new THREE.AudioListener();
+camera.add( listener ); //This causes error in landscape mode!
+
 //Here the sound is loaded and attached to the mesh
-/*let sound = new THREE.PositionalAudio( listener );
+let sound = new THREE.PositionalAudio( listener );
 audioLoader.load( 'ocean.mp3', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop(true);
