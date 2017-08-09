@@ -165,15 +165,15 @@ function render() {
                 }
                 else if(screen.orientation.angle === 90)
                 {
-                        //console.log(sensor.roll, sensor.pitch, sensor.yaw);
+                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
                         if(sensor.yaw < 0)
                         {
-                                console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
+                                //console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
                                 var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2;
                         }
                         else if (sensor.yaw >= 0)
                         {
-                                console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2, sensor.yaw);
+                                //console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2, sensor.yaw);
                                 var latitudeRad = Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2;
                                 
                         }
