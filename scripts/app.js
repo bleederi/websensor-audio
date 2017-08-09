@@ -172,7 +172,8 @@ function render() {
         }
         else if (screen.orientation.angle === 90)
         {
-                //container.canvas.rotate()
+                //container.canvas.rotate();
+                console.log(sensor.roll, sensor.pitch, sensor.yaw);
                 camera.target.x = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
                 camera.target.y = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
                 camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
