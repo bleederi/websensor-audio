@@ -122,9 +122,9 @@ container.appendChild( renderer.domElement );
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio( window.devicePixelRatio );
     //canvas.style.width = window.innerWidth;
     //canvas.style.height = window.innerHeight;   
-        //renderer.setPixelRatio( window.devicePixelRatio );
         //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
         //sphereMaterial.needsUpdate = true;
   }
