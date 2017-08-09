@@ -3,7 +3,7 @@
 //This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
 class InclinationSensor {
         constructor() {
-        this.sensor_ = new OrientationSensor({ frequency: 60 });
+        this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.mat4_ = new Float32Array(16);
         this.roll_ = 0;
         this.pitch_ = 0;
