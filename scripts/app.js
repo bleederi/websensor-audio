@@ -164,10 +164,11 @@ function render() {
         }
         else if(screen.orientation.angle === 90)
         {
-                console.log(sensor.roll, sensor.pitch, sensor.yaw);
+                console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
                 var longitudeRad = -sensor.yaw;
-                var latitudeRad = (sensor.yaw/Math.abs(sensor.yaw)) * sensor.pitch - Math.PI/2;
-                //(sensor.yaw/Math.abs(sensor.yaw)) * sensor.pitch - Math.PI/2
+                var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2;
+                
+        
         }
         }
         else
