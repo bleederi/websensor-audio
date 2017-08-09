@@ -118,7 +118,7 @@ container.appendChild( renderer.domElement );
   var show = function() {
         console.log("Orientation type is " + screen.orientation.type);
         console.log("Orientation angle is " + screen.orientation.angle);
-        console.log("w,h:", window.innerWidth, window.innerHeight "cw, ch:", ca);
+        console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:");
         renderer.setSize(window.innerWidth, window.innerHeight);
     canvas.style.width = window.innerWidth;
     canvas.style.height = window.innerHeight;   
