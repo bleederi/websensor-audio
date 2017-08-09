@@ -118,7 +118,7 @@ container.appendChild( renderer.domElement );
   var show = function() {
         console.log("Orientation type is " + screen.orientation.type);
         console.log("Orientation angle is " + screen.orientation.angle);
-        console.log("w,h:", window.innerWidth, window.innerHeight);
+        console.log("w,h:", window.innerWidth, window.innerHeight "cw, ch:", ca);
         renderer.setSize(window.innerWidth, window.innerHeight);
     canvas.style.width = window.innerWidth;
     canvas.style.height = window.innerHeight;   
@@ -163,7 +163,7 @@ function render() {
         }
         else if (screen.orientation.angle === 90)
         {
-                container.canvas.rotate()
+                //container.canvas.rotate()
                 camera.target.x = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
                 camera.target.y = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
                 camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
