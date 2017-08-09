@@ -118,15 +118,15 @@ container.appendChild( renderer.domElement );
   var show = function() {
         console.log("Orientation type is " + screen.orientation.type);
         console.log("Orientation angle is " + screen.orientation.angle);
-        console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:");
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        //console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:");
+    //camera.aspect = window.innerWidth / window.innerHeight;
+    //camera.updateProjectionMatrix();
+        //renderer.setSize(window.innerWidth, window.innerHeight);
     //canvas.style.width = window.innerWidth;
     //canvas.style.height = window.innerHeight;   
-        renderer.setPixelRatio( window.devicePixelRatio );
-        sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
-        sphereMaterial.needsUpdate = true;
+        //renderer.setPixelRatio( window.devicePixelRatio );
+        //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
+        //sphereMaterial.needsUpdate = true;
   }
 //document.body.requestFullscreen();
 //screen.orientation.lock('portrait');
