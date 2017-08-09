@@ -75,7 +75,6 @@ var textureLoader = new THREE.TextureLoader();
 var audioLoader = new THREE.AudioLoader();
 
 //init();       //needs to be activated via button press due to fullscreen requirement, does not respond correctly to orientation changes if not fullscreen
-render();
 
 //This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 function init() {
@@ -150,6 +149,7 @@ console.log(err);
 sensor = null;
 }
 container.requestFullscreen();
+render();
 }
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
