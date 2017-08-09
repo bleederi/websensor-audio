@@ -121,11 +121,11 @@ container.appendChild( renderer.domElement );
         console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:");
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio( window.devicePixelRatio );
-        render();
-    //canvas.style.width = window.innerWidth;
-    //canvas.style.height = window.innerHeight;   
+        //renderer.setSize(window.innerWidth, window.innerHeight);
+        //renderer.setPixelRatio( window.devicePixelRatio );
+        //render();
+    //renderer.domElement.style.width = window.innerWidth;
+    //renderer.domElement.style.height = window.innerHeight;   
         //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
         //sphereMaterial.needsUpdate = true;
   }
