@@ -156,28 +156,34 @@ render();
 function render() {
         if(sensor !== null)
         {
-        var longitudeRad = -sensor.yaw;
-        var latitudeRad = sensor.roll - Math.PI/2;
+                if(screen.orientation.angle === 0)
+                {
+                        var longitudeRad = -sensor.yaw;
+                        var latitudeRad = sensor.roll - Math.PI/2;
+                        console.log(longitudeRad, latitudeRad);
+                        camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
+                        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
+                        camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
+                }       
+                else if (screen.orientation.angle === 90)       //pitch goes 0->-Math.PI->0, always < 0 when moving down->up
+                {
+                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
+                        //if(sensor.yaw < 0)      //affects roll
+
+                        //container.canvas.rotate();
+                        camera.target.x = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
+                        camera.target.y = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
+                        camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
+                } 
         }
         else
         {
                 var longitudeRad = 0;
                 var latitudeRad = 0;       
         }        
-        if(screen.orientation.angle === 0)
-        {
-                camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-                camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
-                camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
+
         }
-        else if (screen.orientation.angle === 90)
-        {
-                //container.canvas.rotate();
-                console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                camera.target.x = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
-                camera.target.y = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-                camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
-        }
+
         camera.lookAt(camera.target);
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
