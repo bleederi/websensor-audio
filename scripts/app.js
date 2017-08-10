@@ -32,9 +32,9 @@ class AbsoluteInclinationSensor {
                 if (this.onreading_) this.onreading_();
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
                 euler.setFromQuaternion(quaternion, 'ZYX');
-                this.pitch_ = euler.y;
-                this.roll_ = euler.z;
-                this.yaw_ = euler.x;
+                this.pitch_ = euler.x;
+                this.roll_ = euler.y;
+                this.yaw_ = euler.z;
         };
         }
         start() { this.sensor_.start(); }
@@ -221,5 +221,5 @@ function render() {
 
 function update_debug()
 {
-                        document.getElementById("ori").textContent = `Orientation: ${sensor.pitch} ${sensor.roll} ${sensor.yaw}`;
+                        document.getElementById("ori").textContent = `Orientation: ${sensor.yaw} ${sensor.pitch} ${sensor.roll}`;
 }
