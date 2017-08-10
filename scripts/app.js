@@ -142,7 +142,7 @@ renderer.setSize(width, height);
 
 //Sensor setup below - try-catch only for testing
 try {
-sensor = new InclinationSensor();
+sensor = new AbsoluteInclinationSensor();
 sensor.start();
 }
 catch(err)
