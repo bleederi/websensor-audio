@@ -115,7 +115,7 @@ soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 var canvas = document.getElementsByTagName('canvas')[0];
-canvas.height = 200;        //test
+canvas.style.height = '10%';        //test
 
 
  /* var show = function() {
