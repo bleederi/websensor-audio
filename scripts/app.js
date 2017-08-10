@@ -197,7 +197,7 @@ function render() {
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
                         console.log(euler.x, euler.y, euler.z);
-                                var longitudeRad = -euler.x;
+                                var longitudeRad = -euler.z;
                                 var latitudeRad = euler.y - Math.PI/2;                                                
                 
                 }
