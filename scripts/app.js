@@ -59,7 +59,7 @@ class AbsoluteInclinationSensor {
 }
 
 const container = document.querySelector('#app-view');
-var euler = new THREE.Euler( 0, 0, 0, 'YZX' );
+var euler = new THREE.Euler( 0, 0, 0, 'ZYX' );
 var sensor = null;
 
 var image = "beach_dinner.jpg";
