@@ -10,25 +10,7 @@ class AbsoluteInclinationSensor {
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
                 let quaternion = new THREE.Quaternion();
-                //Convert to Euler angles
-                const ysqr = quat[1] ** 2;
-
-                // Roll (y-axis rotation).
-                const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
-                const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
-                //this.roll_ = Math.atan2(t0, t1);
-
-                // Pitch (x-axis rotation).
-                let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
-                t2 = t2 > 1 ? 1 : t2;
-                t2 = t2 < -1 ? -1 : t2;
-                //this.pitch_ = Math.asin(t2);
-
-                // Yaw (z-axis rotation).
-                const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
-                const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
-                //this.yaw_ = Math.atan2(t3, t4);
-                if (this.onreading_) this.onreading_();
+                let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
                 //Coordinate system must be adapted depending on orientation
                 if(screen.orientation.angle === 0)      //portrait mode
@@ -39,10 +21,10 @@ class AbsoluteInclinationSensor {
                 {
                 euler.setFromQuaternion(quaternion, 'ZXY');     //ZYX works in portrait, ZXY in landscape
                 }
-                
-                //this.x_ = euler.x;
-                //this.y_ = euler.y;
-                //this.z_ = euler.z;
+                this.x_ = euler.x;
+                this.y_ = euler.y;
+                this.z_ = euler.z;
+                if (this.onreading_) this.onreading_();
         };
         }
         start() { this.sensor_.start(); }
@@ -68,7 +50,6 @@ class AbsoluteInclinationSensor {
 }
 
 const container = document.querySelector('#app-view');
-var euler = new THREE.Euler( 0, 0, 0);
 var sensor = null;
 
 var image = "beach_dinner.jpg";
