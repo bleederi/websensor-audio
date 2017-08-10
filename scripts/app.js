@@ -4,9 +4,9 @@
 class AbsoluteInclinationSensor {
         constructor() {
         this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
-        this.roll_ = 0;
-        this.pitch_ = 0;
-        this.yaw_ = 0;
+        this.x_ = 0;
+        this.y_ = 0;
+        this.z_ = 0;
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
                 let quaternion = new THREE.Quaternion();
@@ -40,21 +40,21 @@ class AbsoluteInclinationSensor {
                 euler.setFromQuaternion(quaternion, 'ZXY');     //ZYX works in portrait, ZXY in landscape
                 }
                 
-                //this.pitch_ = euler.x;
-                //this.roll_ = euler.y;
-                //this.yaw_ = euler.z;
+                //this.x_ = euler.x;
+                //this.y_ = euler.y;
+                //this.z_ = euler.z;
         };
         }
         start() { this.sensor_.start(); }
         stop() { this.sensor_.stop(); }
-        get roll() {
-                return this.roll_;
+        get x() {
+                return this.x_;
         }
-        get pitch() {
-                return this.pitch_;
+        get y() {
+                return this.y_;
         } 
-        get yaw() {
-                return this.yaw_;
+        get z() {
+                return this.z_;
         }
         set onactivate(func) {
                 this.sensor_.onactivate_ = func;
@@ -131,30 +131,6 @@ soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
- /* var show = function() {
-        console.log("Orientation type is " + screen.orientation.type);
-        console.log("Orientation angle is " + screen.orientation.angle);
-        console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:", renderer.domElement.width, renderer.domElement.height);
-    //camera.aspect = window.innerWidth / window.innerHeight;
-    //camera.updateProjectionMatrix();
-var width = container.offsetWidth;
-var height = container.offsetHeight;
-camera.aspect = width / height;
-camera.updateProjectionMatrix();
-renderer.setSize(width, height);
-        //renderer.setSize(window.innerWidth, window.innerHeight);
-        //renderer.setPixelRatio( window.devicePixelRatio );
-        //render();
-    //renderer.domElement.style.width = window.innerWidth;
-    //renderer.domElement.style.height = window.innerHeight;   
-        //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
-        //sphereMaterial.needsUpdate = true;
-  }*/
-//document.body.requestFullscreen();
-//s                                                                                                      creen.orientation.lock('portrait');
-//screen.orientation.addEventListener("change", show);
-
-
 //Sensor setup below - try-catch only for testing
 try {
 sensor = new AbsoluteInclinationSensor();
@@ -166,40 +142,30 @@ console.log(err);
 sensor = null;
 }
 
-window.addEventListener( 'resize', onWindowResize, false );     //for some reason orientationchange does not work
+window.addEventListener( 'resize', onWindowResize, false );     //On window resize, also resize canvas so it fills the screen
 
 function onWindowResize() {0
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth , window.innerHeight);
 }
-//container.requestFullscreen();        //needed to make canvas resize correctly on orientation change
-
-        //document.getElementById("startbutton").remove();     //hide button
 render();
 
-                var interval=window.setInterval(update_debug,100);
 }
-//Latitude supposed to go -pi to pi down->up
+
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        //const canvas = renderer.domElement;
-        //renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-//camera.aspect = canvas.clientWidth / canvas.clientHeight;
-//camera.updateProjectionMatrix();
         if(sensor !== null)
         {
                 if(screen.orientation.angle === 0)
                 {
-                        console.log(euler.x, euler.y, euler.z);
-                        var longitudeRad = -euler.z;
-                        var latitudeRad = euler.x - Math.PI/2;
+                        var longitudeRad = -sensor.z;
+                        var latitudeRad = sensor.x - Math.PI/2;
                 }
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
-                        console.log(euler.x, euler.y, euler.z);
-                                var longitudeRad = -euler.z;
-                                var latitudeRad = euler.y - Math.PI/2;                                                
+                                var longitudeRad = -sensor.z;
+                                var latitudeRad = sensor.y - Math.PI/2;                                                
                 
                 }
         }
@@ -216,9 +182,4 @@ function render() {
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
 
-}
-
-function update_debug()
-{
-                        document.getElementById("ori").textContent = `Orientation: ${euler.x} ${euler.y} ${euler.z}`;
 }
