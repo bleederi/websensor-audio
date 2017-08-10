@@ -3,7 +3,7 @@
 //This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
 class AbsoluteInclinationSensor {
         constructor() {
-        this.sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
+        this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.roll_ = 0;
         this.pitch_ = 0;
         this.yaw_ = 0;
@@ -153,7 +153,7 @@ sensor = null;
 
 window.addEventListener( 'resize', onWindowResize, false );     //for some reason orientationchange does not work
 
-function onWindowResize() {
+function onWindowResize() {0
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth , window.innerHeight);
