@@ -171,13 +171,14 @@ function render() {
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
                         console.log(sensor.pitch, sensor.roll, sensor.yaw);
-                        var longitudeRad = -sensor.roll;
                         if(sensor.yaw < 0)
                         {
+                                var longitudeRad = -sensor.roll + Math.PI;
                                 var latitudeRad = -Math.PI + Math.abs(sensor.pitch) - Math.PI/2;
                         }
                         else if (sensor.yaw >= 0)
                         {
+                                var longitudeRad = -sensor.roll;
                                 var latitudeRad = sensor.pitch - Math.PI/2;                               
                         }
                         
