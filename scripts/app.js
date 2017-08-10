@@ -161,7 +161,7 @@ render();
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
                 
-        renderer.setSize(canvas.width, canvas.height, false);
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 camera.aspect = canvas.clientWidth / canvas.clientHeight;
 camera.updateProjectionMatrix();
         if(sensor !== null)
