@@ -150,6 +150,14 @@ catch(err)
 console.log(err);
 sensor = null;
 }
+
+window.addEventListener( 'resize', onWindowResize, false );
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth , window.innerHeight);
+}
 //container.requestFullscreen();        //needed to make canvas resize correctly on orientation change
 render();
 
