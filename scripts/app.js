@@ -1,7 +1,7 @@
 'use strict';
 
-//This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
-class AbsoluteInclinationSensor {
+//This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to Euler angles
+class RelativeInclinationSensor {
         constructor() {
         this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.x_ = 0;
