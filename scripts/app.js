@@ -10,7 +10,7 @@ class AbsoluteInclinationSensor {
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
                 let quaternion = new THREE.Quaternion();
-                let euler = new THREE.Euler( 0, 0, 0, 'XYZ' );
+                let euler = new THREE.Euler( 0, 0, 0, 'YXZ' );
                 //Convert to Euler angles
                 const ysqr = quat[1] ** 2;
 
@@ -31,7 +31,7 @@ class AbsoluteInclinationSensor {
                 //this.yaw_ = Math.atan2(t3, t4);
                 if (this.onreading_) this.onreading_();
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
-                euler.setFromQuaternion(quaternion, 'XYZ');
+                euler.setFromQuaternion(quaternion, 'YXZ');
                 this.pitch_ = euler.x;
                 this.roll_ = euler.y;
                 this.yaw_ = euler.z;
