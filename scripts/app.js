@@ -114,6 +114,7 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
 soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
+renderer.domElement.style.height = 50vw;        //test
 
 
  /* var show = function() {
