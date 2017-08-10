@@ -1,29 +1,30 @@
 'use strict';
 
 //This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
-class InclinationSensor {
+class AbsoluteInclinationSensor {
         constructor() {
-        this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
-        this.mat4_ = new Float32Array(16);
+        this.sensor_ = new AbsoluteOrientationSensor({ frequency: 60 });
         this.roll_ = 0;
         this.pitch_ = 0;
         this.yaw_ = 0;
         this.sensor_.onreading = () => {
-                this.sensor_.populateMatrix(this.mat4_);
                 let quat = this.sensor_.quaternion;
                 //Convert to Euler angles
-                const ysqr = quat[0] ** 2;
+                const ysqr = quat[1] ** 2;
+
                 // Roll (x-axis rotation).
-                const t0 = 2 * (quat[3] * quat[1] + quat[0] * quat[2]);
-                const t1 = 1 - 2 * (ysqr + quat[1] ** 2);
+                const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
+                const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
                 this.roll_ = Math.atan2(t0, t1);
+
                 // Pitch (y-axis rotation).
-                let t2 = 2 * (quat[3] * quat[0] - quat[2] * quat[1]);
+                let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
                 t2 = t2 > 1 ? 1 : t2;
                 t2 = t2 < -1 ? -1 : t2;
                 this.pitch_ = Math.asin(t2);
+
                 // Yaw (z-axis rotation).
-                const t3 = 2 * (quat[3] * quat[2] + quat[1] * quat[0]);
+                const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
                 const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
                 this.yaw_ = Math.atan2(t3, t4);
                 if (this.onreading_) this.onreading_();
