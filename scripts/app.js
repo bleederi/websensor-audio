@@ -10,7 +10,6 @@ class AbsoluteInclinationSensor {
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
                 let quaternion = new THREE.Quaternion();
-                let euler = new THREE.Euler( 0, 0, 0, 'ZYX' );
                 //Convert to Euler angles
                 const ysqr = quat[1] ** 2;
 
@@ -32,9 +31,9 @@ class AbsoluteInclinationSensor {
                 if (this.onreading_) this.onreading_();
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
                 euler.setFromQuaternion(quaternion, 'ZYX');
-                this.pitch_ = euler.x;
-                this.roll_ = euler.y;
-                this.yaw_ = euler.z;
+                //this.pitch_ = euler.x;
+                //this.roll_ = euler.y;
+                //this.yaw_ = euler.z;
         };
         }
         start() { this.sensor_.start(); }
@@ -60,7 +59,7 @@ class AbsoluteInclinationSensor {
 }
 
 const container = document.querySelector('#app-view');
-
+var euler = new THREE.Euler( 0, 0, 0, 'ZYX' );
 var sensor = null;
 
 var image = "beach_dinner.jpg";
@@ -183,13 +182,13 @@ function render() {
         {
                 if(screen.orientation.angle === 0)
                 {
-                        console.log(sensor.pitch, sensor.roll, sensor.yaw);
+                        console.log(euler.x, euler.y, euler.z);
                         var longitudeRad = -sensor.yaw;
                         var latitudeRad = sensor.roll - Math.PI/2;
                 }
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
-                        console.log(sensor.pitch, sensor.roll, sensor.yaw);
+                        console.log(euler.x, euler.y, euler.z);
                         if(sensor.yaw < 0)
                         {
                                 var longitudeRad = -sensor.roll + Math.PI;
@@ -221,5 +220,5 @@ function render() {
 
 function update_debug()
 {
-                        document.getElementById("ori").textContent = `Orientation: ${sensor.yaw} ${sensor.pitch} ${sensor.roll}`;
+                        document.getElementById("ori").textContent = `Orientation: ${euler.x} ${euler.y} ${euler.z}`;
 }
