@@ -53,6 +53,8 @@ class AbsoluteInclinationSensor {
 }
 
 const container = document.querySelector('#app-view');
+var canvas = null;
+
 var sensor = null;
 
 var image = "beach_dinner.jpg";
@@ -114,9 +116,7 @@ audioLoader.load( 'ocean.mp3', function( buffer ) {
 soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
-var canvas = document.getElementsByTagName('canvas')[0];
-//canvas.style.height = '10%';        //test
-
+canvas = document.getElementsByTagName('canvas')[0];
 
  /* var show = function() {
         console.log("Orientation type is " + screen.orientation.type);
@@ -160,7 +160,10 @@ render();
 //Latitude supposed to go -pi to pi down->up
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        renderer.setSize(document.getElementsByTagName('canvas')[0].width, document.getElementsByTagName('canvas')[0].height);
+                
+        renderer.setSize(canvas.width, canvas.height, false);
+camera.aspect = canvas.clientWidth / canvas.clientHeight;
+camera.updateProjectionMatrix();
         if(sensor !== null)
         {
                 if(screen.orientation.angle === 0)
