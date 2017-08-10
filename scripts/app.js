@@ -174,7 +174,7 @@ function render() {
                         var longitudeRad = -sensor.roll;
                         if(sensor.yaw < 0)
                         {
-                                var latitudeRad = -Math.PI + Math.abs(sensor.roll);
+                                var latitudeRad = -Math.PI + Math.abs(sensor.pitch) - Math.PI/2;
                         }
                         else if (sensor.yaw >= 0)
                         {
