@@ -30,7 +30,7 @@ class AbsoluteInclinationSensor {
                 //this.yaw_ = Math.atan2(t3, t4);
                 if (this.onreading_) this.onreading_();
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
-                euler.setFromQuaternion(quaternion, 'XYZ');     //ZYX works in portrait
+                euler.setFromQuaternion(quaternion, 'YXZ');     //ZYX works in portrait
                 //this.pitch_ = euler.x;
                 //this.roll_ = euler.y;
                 //this.yaw_ = euler.z;
@@ -59,7 +59,7 @@ class AbsoluteInclinationSensor {
 }
 
 const container = document.querySelector('#app-view');
-var euler = new THREE.Euler( 0, 0, 0, 'XYZ' );
+var euler = new THREE.Euler( 0, 0, 0, 'YXZ' );
 var sensor = null;
 
 var image = "beach_dinner.jpg";
