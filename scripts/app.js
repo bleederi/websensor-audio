@@ -168,19 +168,8 @@ function render() {
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
                         console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                        if(sensor.yaw < 0)
-                        {
-                                //console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
-                                var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2;
-                        }
-                        else if (sensor.yaw >= 0)
-                        {
-                                //console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2, sensor.yaw);
-                                var latitudeRad = Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2;
-                                
-                        }
-                        var longitudeRad = -sensor.yaw;
-                        //var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2; //kun yaw < 0 
+                        var longitudeRad = -sensor.pitch;
+                        var latitudeRad = sensor.roll;
                         
                 
                 }
