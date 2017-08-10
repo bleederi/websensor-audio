@@ -151,7 +151,7 @@ console.log(err);
 sensor = null;
 }
 
-window.addEventListener( 'resize', onWindowResize, false );
+window.addEventListener( 'resize', onWindowResize, false );     //for some reason orientationchange does not work
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -159,6 +159,8 @@ function onWindowResize() {
   renderer.setSize( window.innerWidth , window.innerHeight);
 }
 //container.requestFullscreen();        //needed to make canvas resize correctly on orientation change
+
+        document.getElementById("startbutton").remove();     //hide button
 render();
 
                 var interval=window.setInterval(update_debug,100);
