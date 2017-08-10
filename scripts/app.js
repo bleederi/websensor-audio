@@ -12,18 +12,18 @@ class InclinationSensor {
                 this.sensor_.populateMatrix(this.mat4_);
                 let quat = this.sensor_.quaternion;
                 //Convert to Euler angles
-                const ysqr = quat[1] ** 2;
+                const ysqr = quat[0] ** 2;
                 // Roll (x-axis rotation).
-                const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
-                const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
+                const t0 = 2 * (quat[3] * quat[1] + quat[0] * quat[2]);
+                const t1 = 1 - 2 * (ysqr + quat[1] ** 2);
                 this.roll_ = Math.atan2(t0, t1);
                 // Pitch (y-axis rotation).
-                let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
+                let t2 = 2 * (quat[3] * quat[0] - quat[2] * quat[1]);
                 t2 = t2 > 1 ? 1 : t2;
                 t2 = t2 < -1 ? -1 : t2;
                 this.pitch_ = Math.asin(t2);
                 // Yaw (z-axis rotation).
-                const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
+                const t3 = 2 * (quat[3] * quat[2] + quat[1] * quat[0]);
                 const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
                 this.yaw_ = Math.atan2(t3, t4);
                 if (this.onreading_) this.onreading_();
