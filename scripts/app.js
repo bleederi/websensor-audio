@@ -134,7 +134,7 @@ renderer.setSize(width, height);
         //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
         //sphereMaterial.needsUpdate = true;
   }*/
-document.body.requestFullscreen();
+//document.body.requestFullscreen();
 //s                                                                                                      creen.orientation.lock('portrait');
 //screen.orientation.addEventListener("change", show);
 
@@ -149,7 +149,7 @@ catch(err)
 console.log(err);
 sensor = null;
 }
-container.requestFullscreen();
+//container.requestFullscreen();
 render();
 
                 var interval=window.setInterval(update_debug,100);
@@ -179,7 +179,7 @@ function render() {
                                 var latitudeRad = Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2;
                                 
                         }
-                        //var longitudeRad = -sensor.yaw;
+                        var longitudeRad = -sensor.yaw;
                         //var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2; //kun yaw < 0 
                         
                 
