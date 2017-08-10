@@ -136,25 +136,16 @@ render();
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        if(sensor !== null)
+        var longitudeRad = -sensor.z;
+        if(screen.orientation.angle === 0)
         {
-                if(screen.orientation.angle === 0)
-                {
-                        var longitudeRad = -sensor.z;
-                        var latitudeRad = sensor.x - Math.PI/2;
-                }
-                else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
-                {
-                                var longitudeRad = -sensor.z;
-                                var latitudeRad = sensor.y - Math.PI/2;                                                
-                
-                }
+                var latitudeRad = sensor.x - Math.PI/2;
         }
-        else
+        else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
         {
-                var longitudeRad = 0;
-                var latitudeRad = 0;       
-        }        
+                var latitudeRad = sensor.y - Math.PI/2;                                                
+
+        }       
 
         camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
         camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
