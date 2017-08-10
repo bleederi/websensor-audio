@@ -115,7 +115,7 @@ soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 var canvas = document.getElementsByTagName('canvas')[0];
-canvas.style.height = '10%';        //test
+//canvas.style.height = '10%';        //test
 
 
  /* var show = function() {
@@ -160,6 +160,7 @@ render();
 //Latitude supposed to go -pi to pi down->up
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
+        renderer.setSize(document.getElementsByTagName('canvas')[0].width, document.getElementsByTagName('canvas')[0].height);
         if(sensor !== null)
         {
                 if(screen.orientation.angle === 0)
