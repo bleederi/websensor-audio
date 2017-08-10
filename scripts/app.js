@@ -114,7 +114,7 @@ container.appendChild( renderer.domElement );
 
 //Sensor setup below - try-catch only for testing
 try {
-sensor = new AbsoluteInclinationSensor();
+sensor = new RelativeInclinationSensor();
 sensor.start();
 }
 catch(err)
