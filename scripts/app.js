@@ -150,7 +150,7 @@ catch(err)
 console.log(err);
 sensor = null;
 }
-//container.requestFullscreen();
+//container.requestFullscreen();        //needed to make canvas resize correctly on orientation change
 render();
 
                 var interval=window.setInterval(update_debug,100);
@@ -158,10 +158,10 @@ render();
 //Latitude supposed to go -pi to pi down->up
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        const canvas = renderer.domElement;
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-camera.aspect = canvas.clientWidth / canvas.clientHeight;
-camera.updateProjectionMatrix();
+        //const canvas = renderer.domElement;
+        //renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+//camera.aspect = canvas.clientWidth / canvas.clientHeight;
+//camera.updateProjectionMatrix();
         if(sensor !== null)
         {
                 if(screen.orientation.angle === 0)
