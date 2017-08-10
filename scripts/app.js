@@ -169,7 +169,7 @@ function render() {
                 {
                         console.log(sensor.roll, sensor.pitch, sensor.yaw);
                         var longitudeRad = -sensor.pitch;
-                        var latitudeRad = sensor.roll + Math.PI/2;
+                        var latitudeRad = -sensor.roll + Math.PI/2;
                         
                 
                 }
