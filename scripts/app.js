@@ -115,7 +115,7 @@ container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
 
-  var show = function() {
+ /* var show = function() {
         console.log("Orientation type is " + screen.orientation.type);
         console.log("Orientation angle is " + screen.orientation.angle);
         console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:", renderer.domElement.width, renderer.domElement.height);
@@ -133,10 +133,10 @@ renderer.setSize(width, height);
     //renderer.domElement.style.height = window.innerHeight;   
         //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
         //sphereMaterial.needsUpdate = true;
-  }
-//document.body.requestFullscreen();
+  }*/
+document.body.requestFullscreen();
 //s                                                                                                      creen.orientation.lock('portrait');
-screen.orientation.addEventListener("change", show);
+//screen.orientation.addEventListener("change", show);
 
 
 //Sensor setup below - try-catch only for testing
