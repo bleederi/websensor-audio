@@ -90,7 +90,7 @@ var textureLoader = new THREE.TextureLoader();
 //AudioLoader for loading audio
 var audioLoader = new THREE.AudioLoader();
 
-//init();       //needs to be activated via button press due to fullscreen requirement, does not respond correctly to orientation changes if not fullscreen
+init();
 
 //This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 function init() {
@@ -174,7 +174,7 @@ function onWindowResize() {0
 }
 //container.requestFullscreen();        //needed to make canvas resize correctly on orientation change
 
-        document.getElementById("startbutton").remove();     //hide button
+        //document.getElementById("startbutton").remove();     //hide button
 render();
 
                 var interval=window.setInterval(update_debug,100);
