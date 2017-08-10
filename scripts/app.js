@@ -30,7 +30,7 @@ class AbsoluteInclinationSensor {
                 //this.yaw_ = Math.atan2(t3, t4);
                 if (this.onreading_) this.onreading_();
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
-                euler.setFromQuaternion(quaternion, 'YZX');     //ZYX works in portrait, YZX in landscape
+                euler.setFromQuaternion(quaternion, 'ZYX');     //ZYX works in portrait, YZX in landscape
                 //this.pitch_ = euler.x;
                 //this.roll_ = euler.y;
                 //this.yaw_ = euler.z;
@@ -183,7 +183,7 @@ function render() {
                 if(screen.orientation.angle === 0)
                 {
                         console.log(euler.x, euler.y, euler.z);
-                        var longitudeRad = -euler.y;
+                        var longitudeRad = -euler.z;
                         var latitudeRad = euler.x - Math.PI/2;
                 }
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
