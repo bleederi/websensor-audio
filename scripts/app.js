@@ -9,7 +9,7 @@ class AbsoluteInclinationSensor {
         this.z_ = 0;
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
-                let quaternion = new THREE.Quaternion();
+                let quaternion = new THREE.Quaternion();        //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
                 let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
                 //Coordinate system must be adapted depending on orientation
