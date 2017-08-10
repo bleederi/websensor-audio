@@ -12,12 +12,12 @@ class AbsoluteInclinationSensor {
                 //Convert to Euler angles
                 const ysqr = quat[1] ** 2;
 
-                // Roll (x-axis rotation).
+                // Roll (y-axis rotation).
                 const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
                 const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
                 this.roll_ = Math.atan2(t0, t1);
 
-                // Pitch (y-axis rotation).
+                // Pitch (x-axis rotation).
                 let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
                 t2 = t2 > 1 ? 1 : t2;
                 t2 = t2 < -1 ? -1 : t2;
@@ -164,15 +164,15 @@ function render() {
         {
                 if(screen.orientation.angle === 0)
                 {
-                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
+                        console.log(sensor.pitch, sensor.roll, sensor.yaw);
                         var longitudeRad = -sensor.yaw;
-                        var latitudeRad = sensor.roll - Math.PI/2;
+                        var latitudeRad = sensor.pitch - Math.PI/2;
                 }
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
-                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                        var longitudeRad = -sensor.roll;
-                        var latitudeRad = -sensor.pitch + Math.PI/2;
+                        console.log(sensor.pitch, sensor.roll, sensor.yaw);
+                        var longitudeRad = -sensor.pitch;
+                        var latitudeRad = -sensor.roll + Math.PI/2;
                         
                 
                 }
@@ -194,5 +194,5 @@ function render() {
 
 function update_debug()
 {
-                        document.getElementById("ori").textContent = `Orientation: ${sensor.roll} ${sensor.pitch} ${sensor.yaw}`;
+                        document.getElementById("ori").textContent = `Orientation: ${sensor.pitch} ${sensor.roll} ${sensor.yaw}`;
 }
