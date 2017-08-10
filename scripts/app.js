@@ -36,7 +36,7 @@ class AbsoluteInclinationSensor {
                 }
                 else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
                 {
-                euler.setFromQuaternion(quaternion, 'YZX');     //ZYX works in portrait, YZX in landscape
+                euler.setFromQuaternion(quaternion, 'YXZ');     //ZYX works in portrait, YZX in landscape
                 }
                 
                 //this.pitch_ = euler.x;
