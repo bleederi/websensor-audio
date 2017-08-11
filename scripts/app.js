@@ -125,7 +125,7 @@ sensor = null;
 
 window.addEventListener( 'resize', onWindowResize, false );     //On window resize, also resize canvas so it fills the screen
 
-function onWindowResize() {0
+function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth , window.innerHeight);
@@ -137,6 +137,7 @@ render();
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
         var longitudeRad = -sensor.z;
+        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets TODO: When rotating, should stay at same orientation(implemented in video demo)
         if(screen.orientation.angle === 0)
         {
                 var latitudeRad = sensor.x - Math.PI/2;
