@@ -1,44 +1,42 @@
 'use strict';
 
-//This is an inclination sensor that uses AbsoluteOrientationSensor and converts the quaternion to Euler angles
-class InclinationSensor {
+//This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to Euler angles
+class RelativeInclinationSensor {
         constructor() {
         this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
-        this.mat4_ = new Float32Array(16);
-        this.roll_ = 0;
-        this.pitch_ = 0;
-        this.yaw_ = 0;
+        this.x_ = 0;
+        this.y_ = 0;
+        this.z_ = 0;
         this.sensor_.onreading = () => {
-                this.sensor_.populateMatrix(this.mat4_);
                 let quat = this.sensor_.quaternion;
-                //Convert to Euler angles
-                const ysqr = quat[1] ** 2;
-                // Roll (x-axis rotation).
-                const t0 = 2 * (quat[3] * quat[0] + quat[1] * quat[2]);
-                const t1 = 1 - 2 * (ysqr + quat[0] ** 2);
-                this.roll_ = Math.atan2(t0, t1);
-                // Pitch (y-axis rotation).
-                let t2 = 2 * (quat[3] * quat[1] - quat[2] * quat[0]);
-                t2 = t2 > 1 ? 1 : t2;
-                t2 = t2 < -1 ? -1 : t2;
-                this.pitch_ = Math.asin(t2);
-                // Yaw (z-axis rotation).
-                const t3 = 2 * (quat[3] * quat[2] + quat[0] * quat[1]);
-                const t4 = 1 - 2 * (ysqr + quat[2] ** 2);
-                this.yaw_ = Math.atan2(t3, t4);
+                let quaternion = new THREE.Quaternion();        //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
+                let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
+                quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
+                //Coordinate system must be adapted depending on orientation
+                if(screen.orientation.angle === 0)      //portrait mode
+                {
+                euler.setFromQuaternion(quaternion, 'ZYX');     //ZYX works in portrait, ZXY in landscape
+                }
+                else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)        //landscape mode
+                {
+                euler.setFromQuaternion(quaternion, 'ZXY');     //ZYX works in portrait, ZXY in landscape
+                }
+                this.x_ = euler.x;
+                this.y_ = euler.y;
+                this.z_ = euler.z;
                 if (this.onreading_) this.onreading_();
         };
         }
         start() { this.sensor_.start(); }
         stop() { this.sensor_.stop(); }
-        get roll() {
-                return this.roll_;
+        get x() {
+                return this.x_;
         }
-        get pitch() {
-                return this.pitch_;
+        get y() {
+                return this.y_;
         } 
-        get yaw() {
-                return this.yaw_;
+        get z() {
+                return this.z_;
         }
         set onactivate(func) {
                 this.sensor_.onactivate_ = func;
@@ -74,7 +72,7 @@ var textureLoader = new THREE.TextureLoader();
 //AudioLoader for loading audio
 var audioLoader = new THREE.AudioLoader();
 
-//init();       //needs to be activated via button press due to fullscreen requirement, does not respond correctly to orientation changes if not fullscreen
+init();
 
 //This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
 function init() {
@@ -114,34 +112,9 @@ soundmesh.add( sound );
 container.innerHTML = "";
 container.appendChild( renderer.domElement );
 
-
-  var show = function() {
-        console.log("Orientation type is " + screen.orientation.type);
-        console.log("Orientation angle is " + screen.orientation.angle);
-        console.log("w,h:", window.innerWidth, window.innerHeight, "cw, ch:", renderer.domElement.width, renderer.domElement.height);
-    //camera.aspect = window.innerWidth / window.innerHeight;
-    //camera.updateProjectionMatrix();
-var width = container.offsetWidth;
-var height = container.offsetHeight;
-camera.aspect = width / height;
-camera.updateProjectionMatrix();
-renderer.setSize(width, height);
-        //renderer.setSize(window.innerWidth, window.innerHeight);
-        //renderer.setPixelRatio( window.devicePixelRatio );
-        //render();
-    //renderer.domElement.style.width = window.innerWidth;
-    //renderer.domElement.style.height = window.innerHeight;   
-        //sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
-        //sphereMaterial.needsUpdate = true;
-  }
-//document.body.requestFullscreen();
-//s                                                                                                      creen.orientation.lock('portrait');
-screen.orientation.addEventListener("change", show);
-
-
 //Sensor setup below - try-catch only for testing
 try {
-sensor = new InclinationSensor();
+sensor = new RelativeInclinationSensor();
 sensor.start();
 }
 catch(err)
@@ -149,47 +122,31 @@ catch(err)
 console.log(err);
 sensor = null;
 }
-container.requestFullscreen();
+
+window.addEventListener( 'resize', onWindowResize, false );     //On window resize, also resize canvas so it fills the screen
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth , window.innerHeight);
+}
 render();
 
-                var interval=window.setInterval(update_debug,100);
 }
-//Latitude supposed to go -pi to pi down->up
+
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        if(sensor !== null)
+        var longitudeRad = -sensor.z;
+        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets TODO: When rotating, should stay at same orientation(implemented in video demo)
+        if(screen.orientation.angle === 0)
         {
-                if(screen.orientation.angle === 0)
-                {
-                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                        var longitudeRad = -sensor.yaw;
-                        var latitudeRad = sensor.roll - Math.PI/2;
-                }
-                else if(screen.orientation.angle === 90)
-                {
-                        console.log(sensor.roll, sensor.pitch, sensor.yaw);
-                        if(sensor.yaw < 0)
-                        {
-                                //console.log(sensor.roll, sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2, sensor.yaw);
-                                var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2;
-                        }
-                        else if (sensor.yaw >= 0)
-                        {
-                                //console.log(sensor.roll, Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2, sensor.yaw);
-                                var latitudeRad = Math.PI/2 - (sensor.pitch + Math.sign(sensor.yaw) * Math.PI/2) - Math.PI/2;
-                                
-                        }
-                        //var longitudeRad = -sensor.yaw;
-                        //var latitudeRad = sensor.pitch - Math.sign(sensor.yaw) * Math.PI/2; //kun yaw < 0 
-                        
-                
-                }
+                var latitudeRad = sensor.x - Math.PI/2;
         }
-        else
+        else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
         {
-                var longitudeRad = 0;
-                var latitudeRad = 0;       
-        }        
+                var latitudeRad = sensor.y - Math.PI/2;                                                
+
+        }       
 
         camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
         camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
@@ -198,9 +155,4 @@ function render() {
 	renderer.render( scene, camera );
 	requestAnimationFrame( render );
 
-}
-
-function update_debug()
-{
-                        document.getElementById("ori").textContent = `Orientation: ${sensor.roll} ${sensor.pitch} ${sensor.yaw}`;
 }
