@@ -139,7 +139,6 @@ function init() {
           renderer.setSize( window.innerWidth , window.innerHeight);
         }
         render();
-
 }
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
