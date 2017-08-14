@@ -7,6 +7,8 @@ class RelativeInclinationSensor {
         this.x_ = 0;
         this.y_ = 0;
         this.z_ = 0;
+        this.longitudeInitial_ = 0;
+        this.initialoriobtained_ = false;
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
                 let quaternion = new THREE.Quaternion();        //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
@@ -24,6 +26,15 @@ class RelativeInclinationSensor {
                 this.x_ = euler.x;
                 this.y_ = euler.y;
                 this.z_ = euler.z;
+                if(!this.initialoriobtained_) //obtain initial longitude - needed to make the initial camera orientation the same every time
+                {
+                        this.longitudeInitial_ = -this.z_;
+                        if(screen.orientation.angle === 90)
+                        {
+                                this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //offset fix
+                        }
+                        this.initialoriobtained_ = true;
+                }
                 if (this.onreading_) this.onreading_();
         };
         }
@@ -51,7 +62,8 @@ class RelativeInclinationSensor {
 
 const container = document.querySelector('#app-view');
 var sensor = null;
-
+var longitude = 0;
+var latitude = 0;
 var image = "beach_dinner.jpg";
 
 //Sets up the required THREE.js variables
@@ -136,23 +148,38 @@ render();
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        var longitudeRad = -sensor.z;
-        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets TODO: When rotating, should stay at same orientation(implemented in video demo)
+        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets
         if(screen.orientation.angle === 0)
         {
-                var latitudeRad = sensor.x - Math.PI/2;
+                longitude = -orientation_sensor.z - orientation_sensor.longitudeInitial;
         }
-        else if(screen.orientation.angle === 90 || screen.orientation.angle === 180 || screen.orientation.angle === 270)
+        else if(screen.orientation.angle === 90)
         {
-                var latitudeRad = sensor.y - Math.PI/2;                                                
+                longitude = -orientation_sensor.z - orientation_sensor.longitudeInitial + Math.PI/2;
+        }
+        else if(screen.orientation.angle === 270)
+        {
+                longitude = -orientation_sensor.z - orientation_sensor.longitudeInitial - Math.PI/2;
+        }
+        if(screen.orientation.angle === 0)
+        {
+                latitude = orientation_sensor.x - Math.PI/2;
+        }
+        else if(screen.orientation.angle === 90)
+        {
+                latitude = -orientation_sensor.y - Math.PI/2;                                                
 
-        }       
+        } 
+        else if(screen.orientation.angle === 270)
+        {
+                latitude = orientation_sensor.y - Math.PI/2;                                                
 
-        camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.cos(longitudeRad);
-        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitudeRad);
-        camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitudeRad) * Math.sin(longitudeRad);
+        } 
+        camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
+        camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitude);
+        camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitude) * Math.sin(longitude);
         camera.lookAt(camera.target);
-	renderer.render( scene, camera );
-	requestAnimationFrame( render );
 
+        renderer.render(scene, camera);
+        requestAnimationFrame(() => this.render());
 }
