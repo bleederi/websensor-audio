@@ -152,6 +152,7 @@ function render() {
                 case 270:
                         longitude = -sensor.z - sensor.longitudeInitial - Math.PI/2;
                         latitude = sensor.y - Math.PI/2;
+                        break;
         }
         camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
         camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitude);
