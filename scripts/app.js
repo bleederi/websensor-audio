@@ -146,7 +146,7 @@ function render() {
                         latitude = sensor.x - Math.PI/2;
                         break; 
                 case 90:
-                        longitude = -sensor.z - sensor.longitudeInitial + Math.PI/2:
+                        longitude = -sensor.z - sensor.longitudeInitial + Math.PI/2;
                         latitude = -sensor.y - Math.PI/2;                 
                         break;     
                 case 270:
