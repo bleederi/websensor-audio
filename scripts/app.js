@@ -139,32 +139,20 @@ function init() {
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
         //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets, also the axis of rotation might change
-        if(screen.orientation.angle === 0)
-        {
-                longitude = -sensor.z - sensor.longitudeInitial;
+        switch(screen.orientation.angle) {
+                default:
+                case 0:
+                        longitude = -sensor.z - sensor.longitudeInitial;
+                        latitude = sensor.x - Math.PI/2;
+                        break; 
+                case 90:
+                        longitude = -sensor.z - sensor.longitudeInitial + Math.PI/2:
+                        latitude = -sensor.y - Math.PI/2;                 
+                        break;     
+                case 270:
+                        longitude = -sensor.z - sensor.longitudeInitial - Math.PI/2;
+                        latitude = sensor.y - Math.PI/2;
         }
-        else if(screen.orientation.angle === 90)
-        {
-                longitude = -sensor.z - sensor.longitudeInitial + Math.PI/2;
-        }
-        else if(screen.orientation.angle === 270)
-        {
-                longitude = -sensor.z - sensor.longitudeInitial - Math.PI/2;
-        }
-        if(screen.orientation.angle === 0)
-        {
-                latitude = sensor.x - Math.PI/2;
-        }
-        else if(screen.orientation.angle === 90)
-        {
-                latitude = -sensor.y - Math.PI/2;                                                
-
-        } 
-        else if(screen.orientation.angle === 270)
-        {
-                latitude = sensor.y - Math.PI/2;                                                
-
-        } 
         camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
         camera.target.y = (cameraConstant/2) * Math.cos(Math.PI/2 - latitude);
         camera.target.z = (cameraConstant/2) * Math.sin(Math.PI/2 - latitude) * Math.sin(longitude);
