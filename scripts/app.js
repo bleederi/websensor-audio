@@ -49,6 +49,9 @@ class RelativeInclinationSensor {
         get z() {
                 return this.z_;
         }
+        get longitudeInitial() {
+                return this.longitudeInitial_;
+        }
         set onactivate(func) {
                 this.sensor_.onactivate_ = func;
         }
