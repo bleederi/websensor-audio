@@ -117,11 +117,11 @@ function init() {
         //Here the sound is loaded and attached to the mesh
         let sound = new THREE.PositionalAudio( listener );
         audioLoader.load( 'ocean.mp3', function( buffer ) {
-	        sound.setBuffer( buffer );
-	        sound.setLoop(true);
-	        sound.setRefDistance( 40 );
+                sound.setBuffer( buffer );
+                sound.setLoop(true);
+                sound.setRefDistance( 40 );
                 sound.setRolloffFactor(1);
-	        sound.play();
+                sound.play();
         });
         soundmesh.add( sound );
         container.innerHTML = "";
@@ -144,7 +144,7 @@ function init() {
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets
+        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets, also the axis of rotation might change
         if(screen.orientation.angle === 0)
         {
                 longitude = -sensor.z - sensor.longitudeInitial;
