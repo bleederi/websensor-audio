@@ -151,28 +151,28 @@ function render() {
         //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets
         if(screen.orientation.angle === 0)
         {
-                longitude = -orientation_sensor.z - orientation_sensor.longitudeInitial;
+                longitude = -sensor.z - sensor.longitudeInitial;
         }
         else if(screen.orientation.angle === 90)
         {
-                longitude = -orientation_sensor.z - orientation_sensor.longitudeInitial + Math.PI/2;
+                longitude = -sensor.z - sensor.longitudeInitial + Math.PI/2;
         }
         else if(screen.orientation.angle === 270)
         {
-                longitude = -orientation_sensor.z - orientation_sensor.longitudeInitial - Math.PI/2;
+                longitude = -sensor.z - sensor.longitudeInitial - Math.PI/2;
         }
         if(screen.orientation.angle === 0)
         {
-                latitude = orientation_sensor.x - Math.PI/2;
+                latitude = sensor.x - Math.PI/2;
         }
         else if(screen.orientation.angle === 90)
         {
-                latitude = -orientation_sensor.y - Math.PI/2;                                                
+                latitude = -sensor.y - Math.PI/2;                                                
 
         } 
         else if(screen.orientation.angle === 270)
         {
-                latitude = orientation_sensor.y - Math.PI/2;                                                
+                latitude = sensor.y - Math.PI/2;                                                
 
         } 
         camera.target.x = (cameraConstant/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
