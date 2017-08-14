@@ -184,5 +184,5 @@ function render() {
         camera.lookAt(camera.target);
 
         renderer.render(scene, camera);
-        requestAnimationFrame(() => this.render());
+        requestAnimationFrame(() => render());
 }
