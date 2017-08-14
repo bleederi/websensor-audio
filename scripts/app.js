@@ -64,7 +64,7 @@ var longitude = 0;
 var latitude = 0;
 var image = "beach_dinner.jpg";
 
-//Sets up the required THREE.js variables
+//Required for a THREE.js scene
 var renderer = new THREE.WebGLRenderer();
 var scene = new THREE.Scene();
 
@@ -74,12 +74,9 @@ var fov = 75;
 var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, cameraConstant);
 camera.target = new THREE.Vector3(0, 0, 0);
 
-//The sphere where the image will be projected
-var sphere = new THREE.SphereGeometry(100, 100, 40);
-
-//TextureLoader for loading the image
+//TextureLoader for loading the image file
 var textureLoader = new THREE.TextureLoader();
-//AudioLoader for loading audio
+//AudioLoader for loading the audio file
 var audioLoader = new THREE.AudioLoader();
 
 init();
@@ -91,7 +88,8 @@ function init() {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio( window.devicePixelRatio );
 
-        //Creating the sphere for the image and adding it to the scene
+        //Creating the sphere where the image will be projected and adding it to the scene
+        let sphere = new THREE.SphereGeometry(100, 100, 40);
         sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
         let sphereMaterial = new THREE.MeshBasicMaterial();
         sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
@@ -100,14 +98,13 @@ function init() {
         scene.add(sphereMesh);
 
         //The sound needs to be attached to a mesh, here an invisible one, in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
-        let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshPhongMaterial() );    //The mesh is invisible by default
+        let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshBasicMaterial() );    //The mesh is invisible by default
         soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
         scene.add( soundmesh );
 
-
         //Add an audio listener to the camera so we can hear the sound
         let listener = new THREE.AudioListener();
-        camera.add( listener ); //This causes error in landscape mode!
+        camera.add( listener );
 
         //Here the sound is loaded and attached to the mesh
         let sound = new THREE.PositionalAudio( listener );
@@ -133,6 +130,7 @@ function init() {
           camera.updateProjectionMatrix();
           renderer.setSize( window.innerWidth , window.innerHeight);
         }
+
         render();
 }
 
