@@ -1,4 +1,5 @@
 const CACHE_VERSION = 1;
+const APP_NAME = 'websensor-audio';
 
 self.addEventListener('install', function(event) {
 //Caching
@@ -6,9 +7,9 @@ self.addEventListener('install', function(event) {
     caches.open(CACHE_VERSION.toString()).then(function(cache) {
       return cache.addAll([
         'index.html',
-        '/scripts/app.js',
-        '/resources/beach_dinner.jpg',
-        '/resources/ocean.mp3',
+        APP_NAME + '/scripts/app.js',
+        APP_NAME + '/resources/beach_dinner.jpg',
+        APP_NAME + '/resources/ocean.mp3',
       ]);
     })
   );
@@ -25,7 +26,7 @@ this.addEventListener('fetch', function(event) {
         return response;
       });
     }).catch(function() {
-      return caches.match('/resources/beach_dinner.jpg');       //Fallback image, should be available
+      return caches.match(APP_NAME + '/resources/beach_dinner.jpg');       //Fallback image, should be available
     })
   );
 });
