@@ -25,7 +25,7 @@ this.addEventListener('fetch', function(event) {
         return response;
       });
     }).catch(function() {
-      return caches.match(APP_NAME + '/resources/beach_dinner.jpg');       //Fallback image, should be available
+      return caches.match('resources/beach_dinner.jpg');       //Fallback image, should be available
     })
   );
 });
