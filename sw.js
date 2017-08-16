@@ -7,6 +7,7 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
         'index.html',
         'scripts/app.js',
+        'scripts/three.min.js',
         'resources/beach_dinner.jpg',
         'resources/ocean.mp3',
       ]);
