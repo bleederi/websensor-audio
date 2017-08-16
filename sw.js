@@ -7,9 +7,9 @@ self.addEventListener('install', function(event) {
     caches.open(CACHE_VERSION.toString()).then(function(cache) {
       return cache.addAll([
         'index.html',
-        APP_NAME + '/scripts/app.js',
-        APP_NAME + '/resources/beach_dinner.jpg',
-        APP_NAME + '/resources/ocean.mp3',
+        'scripts/app.js',
+        'resources/beach_dinner.jpg',
+        'resources/ocean.mp3',
       ]);
     })
   );
