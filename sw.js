@@ -1,5 +1,4 @@
 const CACHE_VERSION = 1;
-const APP_NAME = 'websensor-audio';
 
 self.addEventListener('install', function(event) {
 //Caching
