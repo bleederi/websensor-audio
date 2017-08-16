@@ -62,7 +62,7 @@ const container = document.querySelector('#app-view');
 var sensor = null;
 var longitude = 0;
 var latitude = 0;
-var image = "beach_dinner.jpg";
+var image = "resources/beach_dinner.jpg";
 
 //Required for a THREE.js scene
 var renderer = new THREE.WebGLRenderer();
@@ -121,7 +121,7 @@ function init() {
 
         //Here the sound is loaded and attached to the mesh
         let sound = new THREE.PositionalAudio( listener );
-        audioLoader.load( 'ocean.mp3', function( buffer ) {
+        audioLoader.load( 'resources/ocean.mp3', function( buffer ) {
                 sound.setBuffer( buffer );
                 sound.setLoop(true);
                 sound.setRefDistance( 40 );
