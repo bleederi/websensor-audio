@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1'
+const CACHE_VERSION = 'v1';
 
 self.addEventListener('install', function(event) {
 //Caching
