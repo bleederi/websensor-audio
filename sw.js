@@ -20,8 +20,7 @@ this.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request).then(function(resp) {
       return resp || fetch(event.request, {
-  credentials: 'include',
-  redirect: 'follow'
+  credentials: 'include'
 }).then(function(response) {
         caches.open(CACHE_VERSION.toString()).then(function(cache) {
           cache.put(event.request, response.clone());
