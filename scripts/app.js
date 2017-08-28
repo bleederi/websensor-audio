@@ -4,10 +4,11 @@
 
 'use strict';
 
-//This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to Euler angles
+// This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to
+// Euler angles
 class RelativeInclinationSensor extends RelativeOrientationSensor{
-        constructor() {
-        super();
+        constructor(options) {
+        super(options);
         //this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.longitude_ = 0;
         this.latitude_ = 0;
@@ -15,24 +16,31 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
         this.initialOriObtained_ = false;
         super.onreading = () => {
                 let quat = super.quaternion;
-                //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
+                // Conversion to Euler angles done in THREE.js so we have to create a
+                // THREE.js object for holding the quaternion to convert from
                 let quaternion = new THREE.Quaternion();
-                let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
+                // euler will hold the Euler angles corresponding to the quaternion
+                let euler = new THREE.Euler( 0, 0, 0);  
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
-                //Order of rotations must be adapted depending on orientation - for portrait ZYX, for landscape ZXY
+                // Order of rotations must be adapted depending on orientation
+                // for portrait ZYX, for landscape ZXY
                 let angleOrder = null;
                 screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
-                euler.setFromQuaternion(quaternion, angleOrder);     //ZYX works in portrait, ZXY in landscape
-                if(!this.initialOriObtained_) //Obtain initial longitude to make the initial camera orientation the same every time
+                euler.setFromQuaternion(quaternion, angleOrder);
+                if(!this.initialOriObtained_)
                 {
+                        // Initial longitude needed to make the initial camera orientation 
+                        // the same every time
                         this.longitudeInitial_ = -euler.z;
                         if(screen.orientation.angle === 90)
                         {
-                                this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //Offset fix
+                                this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;
                         }
                         this.initialOriObtained_ = true;
                 }
-                //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets, also the axis of rotation might change
+                // Device orientation changes need to be taken into account
+                // when reading the sensor values by adding offsets
+                // Also the axis of rotation might change
                 switch(screen.orientation.angle) {
                         default:
                         case 0:
@@ -51,27 +59,16 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 if (this.onreading_) this.onreading_();
         };
         }
-        //start() { this.sensor_.start(); }
-        //stop() { this.sensor_.stop(); }
         get longitude() {
                 return this.longitude_;
         }
         get latitude() {
                 return this.latitude_;
         }
-        /*set onactivate(func) {
-                this.sensor_.onactivate_ = func;
-        }
-        set onerror(err) {
-                this.sensor_.onerror_ = err;
-        }
-        set onreading (func) {
-                this.sensor_.onreading_ = func;  
-        }*/
 }
 
 const container = document.querySelector('#app-view');
-var oriSensor = new RelativeInclinationSensor();
+var oriSensor = new RelativeInclinationSensor({frequency: 60});
 var image = "resources/beach_dinner.jpg";
 
 //Required for a THREE.js scene
