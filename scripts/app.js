@@ -32,7 +32,6 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
             screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
             euler.setFromQuaternion(quaternion, angleOrder);
             if (!this.initialOriObtained_) {
-
                 // Initial longitude needed to make the initial camera orientation
                 // the same every time
                 this.longitudeInitial_ = -euler.z;
@@ -75,11 +74,6 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
     }
 }
 
-// Camera constants
-const farPlane = 200, fov = 75;
-
-// Required for a THREE.js scene
-var camera, scene, renderer, oriSensor;
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
@@ -95,17 +89,23 @@ if ('serviceWorker' in navigator) {
 // adds the canvas to the DOM
 function init() {
 
+    // Camera constants
+    const farPlane = 200, fov = 75;
+
     const container = document.querySelector('#app-view');
     let image = "resources/beach_dinner.jpg";
+    
+    // Required for a THREE.js scene
+    //    var camera, scene, renderer, inclSensor;
 
     // ThreeJS scene setup below
-    camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane);
-    scene = new THREE.Scene();
-    renderer = new THREE.WebGLRenderer();
+    var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane);
+    var scene = new THREE.Scene();
+    var renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio( window.devicePixelRatio );
-    oriSensor = new RelativeInclinationSensor({frequency: 60});
-    oriSensor.onreading = render;   // When sensor sends new values, render again using those
+    var inclSensor = new RelativeInclinationSensor({frequency: 60});
+    inclSensor.onreading = render.bind(this);   // When sensor sends new values, render again using those
 
     // TextureLoader for loading the image file
     let textureLoader = new THREE.TextureLoader();
@@ -154,7 +154,7 @@ function init() {
     container.appendChild( renderer.domElement );
 
     // Sensor initialization
-    oriSensor.start();
+    inclSensor.start();
 
     // On window resize, also resize canvas so it fills the screen
     window.addEventListener('resize', () => {
@@ -163,14 +163,14 @@ function init() {
         renderer.setSize(window.innerWidth, window.innerHeight);
     }, false);
 
-    render();
+    render().bind(this);
 }
 
 // Renders the scene, orienting the camera according to the longitude and latitude
 function render() {
-        let targetX = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.cos(oriSensor.longitude);
-        let targetY = (farPlane/2) * Math.cos(Math.PI/2 - oriSensor.latitude);
-        let targetZ = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.sin(oriSensor.longitude);
+        let targetX = (farPlane/2) * Math.sin(Math.PI/2 - inclSensor.latitude) * Math.cos(inclSensor.longitude);
+        let targetY = (farPlane/2) * Math.cos(Math.PI/2 - inclSensor.latitude);
+        let targetZ = (farPlane/2) * Math.sin(Math.PI/2 - inclSensor.latitude) * Math.sin(inclSensor.longitude);
         camera.lookAt(new THREE.Vector3(targetX, targetY, targetZ));
 
         renderer.render(scene, camera);
