@@ -71,7 +71,7 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
 
 const container = document.querySelector('#app-view');
 var oriSensor = new RelativeInclinationSensor({frequency: 60});
-oriSensor.onreading = () => {};
+oriSensor.onreading = render;
 var image = "resources/beach_dinner.jpg";
 
 //Required for a THREE.js scene
@@ -163,7 +163,7 @@ if ('serviceWorker' in navigator) {
                 renderer.setSize(window.innerWidth, window.innerHeight);
         }, false);
 
-        render();
+        //render();
 })();
 
 //Renders the scene according to the longitude and latitude
@@ -174,5 +174,5 @@ function render() {
         camera.lookAt(camera.target);
 
         renderer.render(scene, camera);
-        requestAnimationFrame(() => render());
+        //requestAnimationFrame(() => render());
 }
