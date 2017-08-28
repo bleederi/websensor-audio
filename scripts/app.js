@@ -24,7 +24,7 @@ class RelativeInclinationSensor {
                 euler.setFromQuaternion(quaternion, angleOrder);     //ZYX works in portrait, ZXY in landscape
                 if(!this.initialoriobtained_) //Obtain initial longitude to make the initial camera orientation the same every time
                 {
-                        this.longitudeInitial_ = -euler.z_;
+                        this.longitudeInitial_ = -euler.z;
                         if(screen.orientation.angle === 90)
                         {
                                 this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //Offset fix
