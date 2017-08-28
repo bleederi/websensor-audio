@@ -21,14 +21,17 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
             // THREE.js object for holding the quaternion to convert from
             // Order x,y,z,w
             let quaternion = new THREE.Quaternion(super.quaternion[0], super.quaternion[1], super.quaternion[2], super.quaternion[3]);
+
             // euler will hold the Euler angles corresponding to the quaternion
-            let euler = new THREE.Euler(0, 0, 0);  
+            let euler = new THREE.Euler(0, 0, 0);
+
             // Order of rotations must be adapted depending on orientation
             // for portrait ZYX, for landscape ZXY
             let angleOrder = null;
             screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
             euler.setFromQuaternion(quaternion, angleOrder);
             if(!this.initialOriObtained_) {
+
                 // Initial longitude needed to make the initial camera orientation
                 // the same every time
                 this.longitudeInitial_ = -euler.z;
@@ -103,15 +106,20 @@ function init() {
 
     // TextureLoader for loading the image file
     let textureLoader = new THREE.TextureLoader();
+
     // AudioLoader for loading the audio file
     let audioLoader = new THREE.AudioLoader();
+
     // Creating the sphere where the image will be projected and adding it to the scene
     let sphere = new THREE.SphereGeometry(100, 100, 40);
+
     // The sphere needs to be transformed for the image to render inside it
     sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     let sphereMaterial = new THREE.MeshBasicMaterial();
+
     // Use the image as the material for the sphere
     sphereMaterial.map = textureLoader.load(image);
+
     // Combining geometry and material produces the mesh with the image as its material
     let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
     scene.add(sphereMesh);
@@ -120,6 +128,7 @@ function init() {
     // in order to be able to be positioned in the scene.
     // Here the mesh is created and added to the scene
     let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshBasicMaterial() );
+
     // The position of the mesh is where the sound will come from
     // Important for directional sound
     soundmesh.position.set( -40, 0, 0 );
