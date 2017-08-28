@@ -1,4 +1,4 @@
-const CACHE_NAME = "websensor-panorama";
+const CACHE_NAME = "websensor-audio";
 const CACHE_VERSION = 1;
 
 self.addEventListener('install', function(event) {
