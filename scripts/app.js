@@ -7,6 +7,7 @@
 //This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to Euler angles
 class RelativeInclinationSensor extends RelativeOrientationSensor{
         constructor() {
+        super();
         this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.longitude_ = 0;
         this.latitude_ = 0;
