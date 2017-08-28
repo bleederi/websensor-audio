@@ -70,8 +70,9 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
 }
 
 // Camera constants
-const farPlane = 200,
-      fov = 75;
+const farPlane, fov; 
+farPlane = 200,
+fov = 75;
 
 // Required for a THREE.js scene
 var camera, scene, renderer, oriSensor;
