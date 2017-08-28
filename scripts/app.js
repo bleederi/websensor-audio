@@ -79,7 +79,19 @@ var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHe
     oriSensor = new RelativeInclinationSensor({frequency: 60});
 
     camera.target = new THREE.Vector3(0, 0, 0);
-    oriSensor.onreading = render;   // When sensor sends new values, render again using those  
+    oriSensor.onreading = render;   // When sensor sends new values, render again using those
+
+//Service worker registration
+if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                        //Registration was successful
+                }, function(err) {
+                        //Registration failed
+                console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+}
 
 // This function sets up the THREE.js scene, initializes the orientation sensor and 
 // adds the canvas to the DOM
@@ -87,16 +99,6 @@ function init() {
 
     const container = document.querySelector('#app-view');
     var image = "resources/beach_dinner.jpg";
-
-    // Service worker registration
-    if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('sw.js').then(function(registration) {
-                    }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
-    }
 
     // ThreeJS scene setup below
     renderer.setSize(window.innerWidth, window.innerHeight);
