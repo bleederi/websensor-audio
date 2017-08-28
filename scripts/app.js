@@ -51,6 +51,8 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 if (this.onreading_) this.onreading_();
         };
         }
+        start() { this.sensor_.start(); }
+        stop() { this.sensor_.stop(); }
         get longitude() {
                 return this.longitude_;
         }
