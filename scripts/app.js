@@ -73,13 +73,13 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
 const farPlane = 200, fov = 75;
 
 // Required for a THREE.js scene
-var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane), 
+var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane),
     scene = new THREE.Scene(), 
     renderer = new THREE.WebGLRenderer(),
     oriSensor = new RelativeInclinationSensor({frequency: 60});
 
     camera.target = new THREE.Vector3(0, 0, 0);
-    oriSensor.onreading = render;
+    oriSensor.onreading = render;   // When sensor sends new values, render again using those  
 
 // This function sets up the THREE.js scene, initializes the orientation sensor and 
 // adds the canvas to the DOM
