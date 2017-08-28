@@ -133,13 +133,12 @@ if ('serviceWorker' in navigator) {
         //Sensor initialization
         oriSensor.start();
 
-        window.addEventListener( 'resize', onWindowResize, false );     //On window resize, also resize canvas so it fills the screen
-
-        function onWindowResize() {
+        //On window resize, also resize canvas so it fills the screen
+        window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
-                renderer.setSize( window.innerWidth , window.innerHeight);
-        }
+                renderer.setSize(window.innerWidth, window.innerHeight);
+        }, false);
 
         render();
 })();
