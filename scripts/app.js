@@ -12,7 +12,7 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
         this.longitude_ = 0;
         this.latitude_ = 0;
         this.longitudeInitial_ = 0;
-        this.initialoriobtained_ = false;
+        this.initialOriObtained_ = false;
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
                 //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
@@ -23,14 +23,14 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 let angleOrder = null;
                 screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
                 euler.setFromQuaternion(quaternion, angleOrder);     //ZYX works in portrait, ZXY in landscape
-                if(!this.initialoriobtained_) //Obtain initial longitude to make the initial camera orientation the same every time
+                if(!this.initialOriObtained_) //Obtain initial longitude to make the initial camera orientation the same every time
                 {
                         this.longitudeInitial_ = -euler.z;
                         if(screen.orientation.angle === 90)
                         {
                                 this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //Offset fix
                         }
-                        this.initialoriobtained_ = true;
+                        this.initialOriObtained_ = true;
                 }
                 //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets, also the axis of rotation might change
                 switch(screen.orientation.angle) {
