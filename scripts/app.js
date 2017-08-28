@@ -8,7 +8,7 @@
 class RelativeInclinationSensor extends RelativeOrientationSensor{
         constructor() {
         super();
-        //this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
+        this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.longitude_ = 0;
         this.latitude_ = 0;
         this.longitudeInitial_ = 0;
@@ -51,16 +51,27 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 if (this.onreading_) this.onreading_();
         };
         }
+        start() { this.sensor_.start(); }
+        stop() { this.sensor_.stop(); }
         get longitude() {
                 return this.longitude_;
         }
         get latitude() {
                 return this.latitude_;
         }
+        set onactivate(func) {
+                this.onactivate_ = func;
+        }
+        set onerror(err) {
+                this.onerror_ = err;
+        }
+        set onreading (func) {
+                this.onreading_ = func;  
+        }
 }
 
 const container = document.querySelector('#app-view');
-var oriSensor = new RelativeInclinationSensor({frequency: 60});
+var oriSensor = new RelativeInclinationSensor();
 var image = "resources/beach_dinner.jpg";
 
 //Required for a THREE.js scene
