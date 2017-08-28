@@ -97,7 +97,7 @@ if ('serviceWorker' in navigator) {
 function init() {
 
     const container = document.querySelector('#app-view');
-    var image = "resources/beach_dinner.jpg";
+    let image = "resources/beach_dinner.jpg";
 
     // ThreeJS scene setup below
     renderer.setSize(window.innerWidth, window.innerHeight);
