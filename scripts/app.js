@@ -66,7 +66,7 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 this.sensor_.onerror_ = err;
         }
         set onreading (func) {
-                this.onreading_ = func;  
+                this.sensor_.onreading_ = func;  
         }
 }
 
@@ -142,6 +142,11 @@ if ('serviceWorker' in navigator) {
         container.appendChild( renderer.domElement );
 
         //Sensor initialization
+       /* //Event listener to render again when sensor gets a new reading
+        oriSensor.addEventListener('reading', () => {
+                render();
+            }
+        });*/
         oriSensor.start();
 
         //On window resize, also resize canvas so it fills the screen
@@ -154,10 +159,10 @@ if ('serviceWorker' in navigator) {
         render();
 })();
 
-//Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
+//Renders the scene according to the longitude and latitude
 function render() {
-        let longitude = oriSensor.longitude;
-        let latitude = oriSensor.latitude;
+
+
         camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.cos(oriSensor.longitude);
         camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - oriSensor.latitude);
         camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.sin(oriSensor.longitude);
