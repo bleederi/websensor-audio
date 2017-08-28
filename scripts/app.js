@@ -5,7 +5,7 @@
 'use strict';
 
 //This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to Euler angles
-class RelativeInclinationSensor {
+class RelativeInclinationSensor extends RelativeOrientationSensor{
         constructor() {
         this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.longitude_ = 0;
@@ -50,22 +50,11 @@ class RelativeInclinationSensor {
                 if (this.onreading_) this.onreading_();
         };
         }
-        start() { this.sensor_.start(); }
-        stop() { this.sensor_.stop(); }
         get longitude() {
                 return this.longitude_;
         }
         get latitude() {
                 return this.latitude_;
-        }
-        set onactivate(func) {
-                this.sensor_.onactivate_ = func;
-        }
-        set onerror(err) {
-                this.sensor_.onerror_ = err;
-        }
-        set onreading (func) {
-                this.onreading_ = func;  
         }
 }
 
@@ -138,7 +127,6 @@ if ('serviceWorker' in navigator) {
                 sound.play();
         });
         soundmesh.add( sound );
-        container.innerHTML = "";
         container.appendChild( renderer.domElement );
 
         //Sensor initialization
@@ -156,11 +144,11 @@ if ('serviceWorker' in navigator) {
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        let longitude = oriSensor.longitude || 0;
-        let latitude = oriSensor.latitude || 0;
-        camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
-        camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - latitude);
-        camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - latitude) * Math.sin(longitude);
+        let longitude = oriSensor.longitude;
+        let latitude = oriSensor.latitude;
+        camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.cos(oriSensor.longitude);
+        camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - oriSensor.latitude);
+        camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.sin(oriSensor.longitude);
         camera.lookAt(camera.target);
 
         renderer.render(scene, camera);
