@@ -1,4 +1,4 @@
-const CACHE_NAME = "websensor-audio";
+const CACHE_NAME = "websensor-panorama";
 const CACHE_VERSION = 1;
 
 self.addEventListener('install', function(event) {
@@ -30,8 +30,6 @@ this.addEventListener('fetch', function(event) {
                         cache.put(event.request, responseClone);
                 });
                 return response;
-                }).catch(function () {
-                        return caches.match('resources/beach_dinner.jpg');      //Fallback
                 });
                 }
         }));
