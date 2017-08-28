@@ -59,7 +59,7 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
         get latitude() {
                 return this.latitude_;
         }
-        set onactivate(func) {
+        /*set onactivate(func) {
                 this.sensor_.onactivate_ = func;
         }
         set onerror(err) {
@@ -67,7 +67,7 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
         }
         set onreading (func) {
                 this.sensor_.onreading_ = func;  
-        }
+        }*/
 }
 
 const container = document.querySelector('#app-view');
