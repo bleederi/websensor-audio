@@ -90,7 +90,7 @@ if ('serviceWorker' in navigator) {
 function init() {
 
     // Camera constants
-    const farPlane = 200, fov = 75;
+    var farPlane = 200, fov = 75;
 
     const container = document.querySelector('#app-view');
     let image = "resources/beach_dinner.jpg";
