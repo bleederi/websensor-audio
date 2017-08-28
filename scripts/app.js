@@ -8,24 +8,21 @@
 class RelativeInclinationSensor {
         constructor() {
         this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
-        this.x_ = 0;
-        this.y_ = 0;
-        this.z_ = 0;
+        this.longitude_ = 0;
+        this.latitude_ = 0;
         this.longitudeInitial_ = 0;
         this.initialoriobtained_ = false;
         this.sensor_.onreading = () => {
                 let quat = this.sensor_.quaternion;
-                let quaternion = new THREE.Quaternion();        //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
+                //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
+                let quaternion = new THREE.Quaternion();
                 let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
                 quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
                 //Order of rotations must be adapted depending on orientation - for portrait ZYX, for landscape ZXY
                 let angleOrder = null;
                 screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
                 euler.setFromQuaternion(quaternion, angleOrder);     //ZYX works in portrait, ZXY in landscape
-                this.x_ = euler.x;
-                this.y_ = euler.y;
-                this.z_ = euler.z;
-                if(!this.initialoriobtained_) //Obtain initial longitude - needed to make the initial camera orientation the same every time
+                if(!this.initialoriobtained_) //Obtain initial longitude to make the initial camera orientation the same every time
                 {
                         this.longitudeInitial_ = -this.z_;
                         if(screen.orientation.angle === 90)
@@ -34,22 +31,32 @@ class RelativeInclinationSensor {
                         }
                         this.initialoriobtained_ = true;
                 }
+                //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets, also the axis of rotation might change
+                switch(screen.orientation.angle) {
+                        default:
+                        case 0:
+                                this.longitude_ = -euler.z - this.longitudeInitial_;
+                                this.latitude_ = euler.x - Math.PI/2;
+                                break; 
+                        case 90:
+                                this.longitude_ = -euler.z - this.longitudeInitial_ + Math.PI/2;
+                                this.latitude_ = -euler.y - Math.PI/2;                 
+                                break;     
+                        case 270:
+                                this.longitude_ = -euler.z - this.longitudeInitial_ - Math.PI/2;
+                                this.latitude_ = euler.y - Math.PI/2;
+                                break;
+                }
                 if (this.onreading_) this.onreading_();
         };
         }
         start() { this.sensor_.start(); }
         stop() { this.sensor_.stop(); }
-        get x() {
-                return this.x_;
+        get longitude() {
+                return this.longitude_;
         }
-        get y() {
-                return this.y_;
-        } 
-        get z() {
-                return this.z_;
-        }
-        get longitudeInitial() {
-                return this.longitudeInitial_;
+        get latitude() {
+                return this.latitude_;
         }
         set onactivate(func) {
                 this.sensor_.onactivate_ = func;
@@ -145,24 +152,8 @@ if ('serviceWorker' in navigator) {
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        let longitude = 0;
-        let latitude = 0;
-        //When the device orientation changes, that needs to be taken into account when reading the sensor values by adding offsets, also the axis of rotation might change
-        switch(screen.orientation.angle) {
-                default:
-                case 0:
-                        longitude = -oriSensor.z - oriSensor.longitudeInitial;
-                        latitude = oriSensor.x - Math.PI/2;
-                        break; 
-                case 90:
-                        longitude = -oriSensor.z - oriSensor.longitudeInitial + Math.PI/2;
-                        latitude = -oriSensor.y - Math.PI/2;                 
-                        break;     
-                case 270:
-                        longitude = -oriSensor.z - oriSensor.longitudeInitial - Math.PI/2;
-                        latitude = oriSensor.y - Math.PI/2;
-                        break;
-        }
+        let longitude = oriSensor.longitude;
+        let latitude = oriSensor.latitude;
         camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
         camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - latitude);
         camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - latitude) * Math.sin(longitude);
