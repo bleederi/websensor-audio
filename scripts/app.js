@@ -7,71 +7,71 @@
 // This is an inclination sensor that uses RelativeOrientationSensor
 // and converts the quaternion to Euler angles
 class RelativeInclinationSensor extends RelativeOrientationSensor{
-        constructor(options) {
-        super(options);
-        this.longitude_ = 0;
-        this.latitude_ = 0;
-        this.longitudeInitial_ = 0;
-        this.initialOriObtained_ = false;
-        }    
-        set onreading(func) {
-                super.onreading = () => {
-                        let quat = super.quaternion;
-                        // Conversion to Euler angles done in THREE.js so we have to create a
-                        // THREE.js object for holding the quaternion to convert from
-                        let quaternion = new THREE.Quaternion();
-                        // euler will hold the Euler angles corresponding to the quaternion
-                        let euler = new THREE.Euler( 0, 0, 0);  
-                        quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
-                        // Order of rotations must be adapted depending on orientation
-                        // for portrait ZYX, for landscape ZXY
-                        let angleOrder = null;
-                        screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
-                        euler.setFromQuaternion(quaternion, angleOrder);
-                        if(!this.initialOriObtained_)
-                        {
-                                // Initial longitude needed to make the initial camera orientation
-                                // the same every time
-                                this.longitudeInitial_ = -euler.z;
-                                if(screen.orientation.angle === 90)
-                                {
-                                        this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;
-                                }
-                                this.initialOriObtained_ = true;
-                        }
-                        // Device orientation changes need to be taken into account
-                        // when reading the sensor values by adding offsets
-                        // Also the axis of rotation might change
-                        switch(screen.orientation.angle) {
-                                default:
-                                case 0:
-                                        this.longitude_ = -euler.z - this.longitudeInitial_;
-                                        this.latitude_ = euler.x - Math.PI/2;
-                                        break; 
-                                case 90:
-                                        this.longitude_ = -euler.z - this.longitudeInitial_ + Math.PI/2;
-                                        this.latitude_ = -euler.y - Math.PI/2;                 
-                                        break;     
-                                case 270:
-                                        this.longitude_ = -euler.z - this.longitudeInitial_ - Math.PI/2;
-                                        this.latitude_ = euler.y - Math.PI/2;
-                                        break;
-                        }
-                        func();
-                };      
-        }
+    constructor(options) {
+    super(options);
+    this.longitude_ = 0;
+    this.latitude_ = 0;
+    this.longitudeInitial_ = 0;
+    this.initialOriObtained_ = false;
+    }    
+    set onreading(func) {
+        super.onreading = () => {
+            let quat = super.quaternion;
+            // Conversion to Euler angles done in THREE.js so we have to create a
+            // THREE.js object for holding the quaternion to convert from
+            let quaternion = new THREE.Quaternion();
+            // euler will hold the Euler angles corresponding to the quaternion
+            let euler = new THREE.Euler( 0, 0, 0);  
+            quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
+            // Order of rotations must be adapted depending on orientation
+            // for portrait ZYX, for landscape ZXY
+            let angleOrder = null;
+            screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
+            euler.setFromQuaternion(quaternion, angleOrder);
+            if(!this.initialOriObtained_)
+            {
+                // Initial longitude needed to make the initial camera orientation
+                // the same every time
+                this.longitudeInitial_ = -euler.z;
+                if(screen.orientation.angle === 90)
+                {
+                    this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;
+                }
+                this.initialOriObtained_ = true;
+            }
+            // Device orientation changes need to be taken into account
+            // when reading the sensor values by adding offsets
+            // Also the axis of rotation might change
+            switch(screen.orientation.angle) {
+                default:
+                case 0:
+                    this.longitude_ = -euler.z - this.longitudeInitial_;
+                    this.latitude_ = euler.x - Math.PI/2;
+                    break; 
+                case 90:
+                    this.longitude_ = -euler.z - this.longitudeInitial_ + Math.PI/2;
+                    this.latitude_ = -euler.y - Math.PI/2;                 
+                    break;     
+                case 270:
+                    this.longitude_ = -euler.z - this.longitudeInitial_ - Math.PI/2;
+                    this.latitude_ = euler.y - Math.PI/2;
+                    break;
+            }
+            func();
+        };      
+    }
 
-        get longitude() {
-                return this.longitude_;
-        }
-        get latitude() {
-                return this.latitude_;
-        }
+    get longitude() {
+        return this.longitude_;
+    }
+    get latitude() {
+        return this.latitude_;
+    }
 }
 
 const container = document.querySelector('#app-view');
 var oriSensor = new RelativeInclinationSensor({frequency: 60});
-oriSensor.onreading = render;
+oriSensor.onreading = render;   // When sensor sends new values, render again using those
 var image = "resources/beach_dinner.jpg";
 
 //Required for a THREE.js scene
@@ -149,11 +149,6 @@ if ('serviceWorker' in navigator) {
         container.appendChild( renderer.domElement );
 
         //Sensor initialization
-       /* //Event listener to render again when sensor gets a new reading
-        oriSensor.addEventListener('reading', () => {
-                render();
-            }
-        });*/
         oriSensor.start();
 
         //On window resize, also resize canvas so it fills the screen
@@ -174,5 +169,4 @@ function render() {
         camera.lookAt(camera.target);
 
         renderer.render(scene, camera);
-        //requestAnimationFrame(() => render());
 }
