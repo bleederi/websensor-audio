@@ -24,7 +24,7 @@ class RelativeInclinationSensor {
                 euler.setFromQuaternion(quaternion, angleOrder);     //ZYX works in portrait, ZXY in landscape
                 if(!this.initialoriobtained_) //Obtain initial longitude to make the initial camera orientation the same every time
                 {
-                        this.longitudeInitial_ = -this.z_;
+                        this.longitudeInitial_ = -euler.z_;
                         if(screen.orientation.angle === 90)
                         {
                                 this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //Offset fix
@@ -82,6 +82,10 @@ var farPlane = 200;
 var fov = 75;
 var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane);
 camera.target = new THREE.Vector3(0, 0, 0);
+
+//Longitude and latitude, used for rendering
+var longitude = 0;
+var latitude = 0;
 
 //Service worker registration
 if ('serviceWorker' in navigator) {
