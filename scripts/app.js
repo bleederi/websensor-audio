@@ -101,7 +101,7 @@ function init() {
     // ThreeJS scene setup below
     camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane);
     scene = new THREE.Scene();
-    renderer = = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio( window.devicePixelRatio );
     oriSensor = new RelativeInclinationSensor({frequency: 60});
