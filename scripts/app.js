@@ -13,8 +13,8 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
         this.latitude_ = 0;
         this.longitudeInitial_ = 0;
         this.initialOriObtained_ = false;
-        this.onreading = () => {
-                let quat = this.quaternion;
+        this.sensor_.onreading = () => {
+                let quat = this.sensor_.quaternion;
                 //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
                 let quaternion = new THREE.Quaternion();
                 let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
@@ -60,13 +60,13 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 return this.latitude_;
         }
         set onactivate(func) {
-                this.onactivate_ = func;
+                this.sensor_.onactivate_ = func;
         }
         set onerror(err) {
-                this.onerror_ = err;
+                this.sensor_.onerror_ = err;
         }
         set onreading (func) {
-                this.onreading_ = func;  
+                this.sensor_.onreading_ = func;  
         }
 }
 
