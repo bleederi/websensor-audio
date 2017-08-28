@@ -152,8 +152,8 @@ if ('serviceWorker' in navigator) {
 
 //Calculates the direction the user is viewing in terms of longitude and latitude and renders the scene
 function render() {
-        let longitude = oriSensor.longitude;
-        let latitude = oriSensor.latitude;
+        let longitude = oriSensor.longitude || 0;
+        let latitude = oriSensor.latitude || 0;
         camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - latitude) * Math.cos(longitude);
         camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - latitude);
         camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - latitude) * Math.sin(longitude);
