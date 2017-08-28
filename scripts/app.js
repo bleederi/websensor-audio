@@ -51,22 +51,11 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
                 if (this.onreading_) this.onreading_();
         };
         }
-        start() { this.start(); }
-        stop() { this.stop(); }
         get longitude() {
                 return this.longitude_;
         }
         get latitude() {
                 return this.latitude_;
-        }
-        set onactivate(func) {
-                this.onactivate_ = func;
-        }
-        set onerror(err) {
-                this.onerror_ = err;
-        }
-        set onreading (func) {
-                this.onreading_ = func;  
         }
 }
 
