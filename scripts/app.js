@@ -78,8 +78,7 @@ var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHe
     renderer = new THREE.WebGLRenderer(),
     oriSensor = new RelativeInclinationSensor({frequency: 60});
 
-    camera.target = new THREE.Vector3(0, 0, 0);
-    oriSensor.onreading = render;   // When sensor sends new values, render again using those
+oriSensor.onreading = render;   // When sensor sends new values, render again using those
 
 //Service worker registration
 if ('serviceWorker' in navigator) {
@@ -159,10 +158,10 @@ function init() {
 
 // Renders the scene, orienting the camera according to the longitude and latitude
 function render() {
-        camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude)* Math.cos(oriSensor.longitude);
-        camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - oriSensor.latitude);
-        camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.sin(oriSensor.longitude);
-        camera.lookAt(camera.target);
+        let targetX = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.cos(oriSensor.longitude);
+        let targetY = (farPlane/2) * Math.cos(Math.PI/2 - oriSensor.latitude);
+        let targetZ = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.sin(oriSensor.longitude);
+        camera.lookAt(new THREE.Vector3(targetX, targetY, targetZ));
 
         renderer.render(scene, camera);
 }
