@@ -163,7 +163,7 @@ if ('serviceWorker' in navigator) {
                 renderer.setSize(window.innerWidth, window.innerHeight);
         }, false);
 
-        //render();
+        render();
 })();
 
 //Renders the scene according to the longitude and latitude
