@@ -74,8 +74,9 @@ const farPlane = 200,
       fov = 75;
 
 // Required for a THREE.js scene
-var camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane), 
-    scene = new THREE.Scene(), 
+var camera, scene, renderer, oriSensor;
+    camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, farPlane),
+    scene = new THREE.Scene(),
     renderer = new THREE.WebGLRenderer(),
     oriSensor = new RelativeInclinationSensor({frequency: 60});
 oriSensor.onreading = render;   // When sensor sends new values, render again using those
