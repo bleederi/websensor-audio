@@ -4,61 +4,63 @@
 
 'use strict';
 
-// This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to
-// Euler angles
+// This is an inclination sensor that uses RelativeOrientationSensor
+// and converts the quaternion to Euler angles
 class RelativeInclinationSensor extends RelativeOrientationSensor{
         constructor(options) {
         super(options);
-        //this.sensor_ = new RelativeOrientationSensor({ frequency: 60 });
         this.longitude_ = 0;
         this.latitude_ = 0;
         this.longitudeInitial_ = 0;
         this.initialOriObtained_ = false;
-        super.onreading = () => {
-                let quat = super.quaternion;
-                // Conversion to Euler angles done in THREE.js so we have to create a
-                // THREE.js object for holding the quaternion to convert from
-                let quaternion = new THREE.Quaternion();
-                // euler will hold the Euler angles corresponding to the quaternion
-                let euler = new THREE.Euler( 0, 0, 0);  
-                quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
-                // Order of rotations must be adapted depending on orientation
-                // for portrait ZYX, for landscape ZXY
-                let angleOrder = null;
-                screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
-                euler.setFromQuaternion(quaternion, angleOrder);
-                if(!this.initialOriObtained_)
-                {
-                        // Initial longitude needed to make the initial camera orientation 
-                        // the same every time
-                        this.longitudeInitial_ = -euler.z;
-                        if(screen.orientation.angle === 90)
+        }    
+        set onreading(func) {
+                super.onreading = () => {
+                        let quat = super.quaternion;
+                        // Conversion to Euler angles done in THREE.js so we have to create a
+                        // THREE.js object for holding the quaternion to convert from
+                        let quaternion = new THREE.Quaternion();
+                        // euler will hold the Euler angles corresponding to the quaternion
+                        let euler = new THREE.Euler( 0, 0, 0);  
+                        quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
+                        // Order of rotations must be adapted depending on orientation
+                        // for portrait ZYX, for landscape ZXY
+                        let angleOrder = null;
+                        screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
+                        euler.setFromQuaternion(quaternion, angleOrder);
+                        if(!this.initialOriObtained_)
                         {
-                                this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;
+                                // Initial longitude needed to make the initial camera orientation
+                                // the same every time
+                                this.longitudeInitial_ = -euler.z;
+                                if(screen.orientation.angle === 90)
+                                {
+                                        this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;
+                                }
+                                this.initialOriObtained_ = true;
                         }
-                        this.initialOriObtained_ = true;
-                }
-                // Device orientation changes need to be taken into account
-                // when reading the sensor values by adding offsets
-                // Also the axis of rotation might change
-                switch(screen.orientation.angle) {
-                        default:
-                        case 0:
-                                this.longitude_ = -euler.z - this.longitudeInitial_;
-                                this.latitude_ = euler.x - Math.PI/2;
-                                break; 
-                        case 90:
-                                this.longitude_ = -euler.z - this.longitudeInitial_ + Math.PI/2;
-                                this.latitude_ = -euler.y - Math.PI/2;                 
-                                break;     
-                        case 270:
-                                this.longitude_ = -euler.z - this.longitudeInitial_ - Math.PI/2;
-                                this.latitude_ = euler.y - Math.PI/2;
-                                break;
-                }
-                if (this.onreading_) this.onreading_();
-        };
+                        // Device orientation changes need to be taken into account
+                        // when reading the sensor values by adding offsets
+                        // Also the axis of rotation might change
+                        switch(screen.orientation.angle) {
+                                default:
+                                case 0:
+                                        this.longitude_ = -euler.z - this.longitudeInitial_;
+                                        this.latitude_ = euler.x - Math.PI/2;
+                                        break; 
+                                case 90:
+                                        this.longitude_ = -euler.z - this.longitudeInitial_ + Math.PI/2;
+                                        this.latitude_ = -euler.y - Math.PI/2;                 
+                                        break;     
+                                case 270:
+                                        this.longitude_ = -euler.z - this.longitudeInitial_ - Math.PI/2;
+                                        this.latitude_ = euler.y - Math.PI/2;
+                                        break;
+                        }
+                        func();
+                };      
         }
+
         get longitude() {
                 return this.longitude_;
         }
@@ -69,6 +71,7 @@ class RelativeInclinationSensor extends RelativeOrientationSensor{
 
 const container = document.querySelector('#app-view');
 var oriSensor = new RelativeInclinationSensor({frequency: 60});
+oriSensor.onreading = () => {};
 var image = "resources/beach_dinner.jpg";
 
 //Required for a THREE.js scene
@@ -97,29 +100,36 @@ if ('serviceWorker' in navigator) {
         });
 }
 
-//This function sets up the THREE.js scene, initializes the orientation sensor and adds the canvas to the DOM
+// This function sets up the THREE.js scene, initializes the orientation sensor and 
+// adds the canvas to the DOM
 (function init() {
 
         //ThreeJS scene setup below
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio( window.devicePixelRatio );
 
-        //TextureLoader for loading the image file
+        // TextureLoader for loading the image file
         let textureLoader = new THREE.TextureLoader();
-        //AudioLoader for loading the audio file
+        // AudioLoader for loading the audio file
         let audioLoader = new THREE.AudioLoader();
-        //Creating the sphere where the image will be projected and adding it to the scene
+        // Creating the sphere where the image will be projected and adding it to the scene
         let sphere = new THREE.SphereGeometry(100, 100, 40);
-        sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));    //The sphere needs to be transformed for the image to render inside it
+        // The sphere needs to be transformed for the image to render inside it
+        sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
         let sphereMaterial = new THREE.MeshBasicMaterial();
-        sphereMaterial.map = textureLoader.load(image); //Use the image as the material for the sphere
+        // Use the image as the material for the sphere
+        sphereMaterial.map = textureLoader.load(image);
         // Combining geometry and material produces the mesh with the image as its material
         let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
         scene.add(sphereMesh);
 
-        //The sound needs to be attached to a mesh, here an invisible one, in order to be able to be positioned in the scene. Here the mesh is created and added to the scene
-        let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshBasicMaterial() );    //The mesh is invisible by default
-        soundmesh.position.set( -40, 0, 0 ); //The position where the sound will come from, important for directional sound
+        // The sound needs to be attached to a mesh, here an invisible one,
+        // in order to be able to be positioned in the scene.
+        // Here the mesh is created and added to the scene
+        let soundmesh = new THREE.Mesh( new THREE.SphereGeometry(), new THREE.MeshBasicMaterial() );
+        // The position of the mesh is where the sound will come from
+        // Important for directional sound
+        soundmesh.position.set( -40, 0, 0 );
         scene.add( soundmesh );
 
         //Add an audio listener to the camera so we can hear the sound
@@ -158,9 +168,7 @@ if ('serviceWorker' in navigator) {
 
 //Renders the scene according to the longitude and latitude
 function render() {
-
-
-        camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.cos(oriSensor.longitude);
+        camera.target.x = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude)* Math.cos(oriSensor.longitude);
         camera.target.y = (farPlane/2) * Math.cos(Math.PI/2 - oriSensor.latitude);
         camera.target.z = (farPlane/2) * Math.sin(Math.PI/2 - oriSensor.latitude) * Math.sin(oriSensor.longitude);
         camera.lookAt(camera.target);
