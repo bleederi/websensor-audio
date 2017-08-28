@@ -1,3 +1,7 @@
+/*
+*       360 degree beach panorama demo using generic sensors
+*/
+
 'use strict';
 
 //This is an inclination sensor that uses RelativeOrientationSensor and converts the quaternion to Euler angles
@@ -13,7 +17,7 @@ class RelativeInclinationSensor {
                 let quat = this.sensor_.quaternion;
                 let quaternion = new THREE.Quaternion();        //Conversion to Euler angles done in THREE.js so we have to create a THREE.js object for holding the quaternion to convert from
                 let euler = new THREE.Euler( 0, 0, 0);  //Will hold the Euler angles corresponding to the quaternion
-                quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //x,y,z,w
+                quaternion.set(quat[0], quat[1], quat[2], quat[3]);     //Order x,y,z,w
                 //Order of rotations must be adapted depending on orientation - for portrait ZYX, for landscape ZXY
                 let angleOrder = null;
                 screen.orientation.angle === 0 ? angleOrder = 'ZYX' : angleOrder = 'ZXY';
@@ -21,12 +25,12 @@ class RelativeInclinationSensor {
                 this.x_ = euler.x;
                 this.y_ = euler.y;
                 this.z_ = euler.z;
-                if(!this.initialoriobtained_) //obtain initial longitude - needed to make the initial camera orientation the same every time
+                if(!this.initialoriobtained_) //Obtain initial longitude - needed to make the initial camera orientation the same every time
                 {
                         this.longitudeInitial_ = -this.z_;
                         if(screen.orientation.angle === 90)
                         {
-                                this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //offset fix
+                                this.longitudeInitial_ = this.longitudeInitial_ + Math.PI/2;     //Offset fix
                         }
                         this.initialoriobtained_ = true;
                 }
@@ -129,13 +133,12 @@ if ('serviceWorker' in navigator) {
         //Sensor initialization
         oriSensor.start();
 
-        window.addEventListener( 'resize', onWindowResize, false );     //On window resize, also resize canvas so it fills the screen
-
-        function onWindowResize() {
+        //On window resize, also resize canvas so it fills the screen
+        window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
-                renderer.setSize( window.innerWidth , window.innerHeight);
-        }
+                renderer.setSize(window.innerWidth, window.innerHeight);
+        }, false);
 
         render();
 })();
